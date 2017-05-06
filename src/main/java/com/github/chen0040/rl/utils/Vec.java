@@ -153,7 +153,7 @@ public class Vec implements Serializable, Cloneable {
             }
         }
 
-        if(!iv.hasValue()){
+        if(!iv.isValid()){
             iv.setValue(defaultValue);
         } else{
             if(iv.getValue() < defaultValue){

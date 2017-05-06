@@ -39,7 +39,7 @@ public class IndexValue {
       return false;
    }
 
-   public boolean hasValue(){
+   public boolean isValid(){
       return index != -1;
    }
 
