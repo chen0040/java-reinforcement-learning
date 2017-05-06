@@ -1,0 +1,12 @@
+language: java
+jdk: oraclejdk8
+
+cache:
+  directories:
+  - $HOME/.m2
+
+before_install:
+  - chmod +x mvnw
+
+script:
+  - ./mvnw test cobertura:cobertura coveralls:report -B -Punit-test
