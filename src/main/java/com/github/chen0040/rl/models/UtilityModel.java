@@ -16,7 +16,7 @@ import java.io.Serializable;
  * where $\sum_{s'} T(s,a,s')U(s')$ is the expected long term reward given that action $a$ is applied at state $s$
  * where $max_a \sum_{s'} T(s,a,s')U(s')$ is the maximum expected long term reward given that the chosen optimal action $a$ is applied at state $s$
  */
-public class UtilityModel implements Serializable, Cloneable {
+public class UtilityModel implements Serializable {
     private Vec U;
     private int stateCount;
     private int actionCount;
@@ -62,8 +62,7 @@ public class UtilityModel implements Serializable, Cloneable {
         stateCount = rhs.stateCount;
     }
 
-    @Override
-    public Object clone(){
+    public UtilityModel makeCopy(){
         UtilityModel clone = new UtilityModel();
         clone.copy(this);
         return clone;

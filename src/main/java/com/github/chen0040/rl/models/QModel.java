@@ -63,8 +63,6 @@ public class QModel {
             if((Q!=null && rhs2.Q==null) || (Q==null && rhs2.Q !=null)) return false;
             if((alpha!=null && rhs2.alpha==null) || (alpha==null && rhs2.alpha!=null)) return false;
 
-            System.out.println("Reach here");
-
             return !((Q != null && !Q.equals(rhs2.Q)) || (alpha != null && !alpha.equals(rhs2.alpha)));
 
         }
