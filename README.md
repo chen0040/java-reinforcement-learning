@@ -3,6 +3,7 @@ Package provides java implementation of reinforcement learning algorithms as des
 
 [![Build Status](https://travis-ci.org/chen0040/java-reinforcement-learning.svg?branch=master)](https://travis-ci.org/chen0040/java-reinforcement-learning) [![Coverage Status](https://coveralls.io/repos/github/chen0040/java-reinforcement-learning/badge.svg?branch=master)](https://coveralls.io/github/chen0040/java-reinforcement-learning?branch=master)
 
+
 #Features
 
 The following reinforcement learning are implemented:
@@ -21,6 +22,9 @@ The package also support a number of action-selection strategy:
 * epsilon-greedy
 * greedy
 * Gibbs-soft-max
+
+
+![Reinforcement Learning](images/rl.jpg)
 
 # Install
 
