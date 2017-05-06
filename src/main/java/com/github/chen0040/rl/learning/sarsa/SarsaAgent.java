@@ -9,7 +9,7 @@ import java.util.Set;
  * Created by xschen on 9/27/2015 0027.
  * @brief Implement temporal-difference learning Sarsa, which is an on-policy TD control algorithm
  */
-public class SarsaAgent implements Cloneable, Serializable{
+public class SarsaAgent implements Serializable{
     private SarsaLearner learner;
     private int currentState;
     private int currentAction;
@@ -95,8 +95,7 @@ public class SarsaAgent implements Cloneable, Serializable{
         learner = acll;
     }
 
-    @Override
-    public Object clone(){
+    public SarsaAgent makeCopy(){
         SarsaAgent clone = new SarsaAgent();
         clone.copy(this);
         return clone;

@@ -1,5 +1,5 @@
 # java-reinforcement-learning
-Package provides java implementation of reinforcement learning algorithms
+Package provides java implementation of reinforcement learning algorithms as described in the book "Reinforcement Learning: An Introduction" by Sutton
 
 [![Build Status](https://travis-ci.org/chen0040/java-reinforcement-learning.svg?branch=master)](https://travis-ci.org/chen0040/java-reinforcement-learning) [![Coverage Status](https://coveralls.io/repos/github/chen0040/java-reinforcement-learning/badge.svg?branch=master)](https://coveralls.io/github/chen0040/java-reinforcement-learning?branch=master)
 
@@ -8,12 +8,15 @@ Package provides java implementation of reinforcement learning algorithms
 The following reinforcement learning are implemented:
 
 * Q-Learn
-* Q(lambda)-Learn
+* Q-Learn with eligibility trace
 * R-Learn
 * SARSA
+* SARSA with eligibility trace
 * Actor-Critic
 
 # Usage
+
+### Create Agent
 
 An reinforcement agent, say, Q-Learn agent, can be created by the following java code:
 
@@ -27,6 +30,14 @@ QAgent agent = new QAgent(stateCount, actionCount);
 
 The agent created has a state map of 100 states, and 10 different actions for its selection.
 
+For Q-Learn and SARSA, the eligibility trace lambda can be enabled by calling:
+
+```java
+agent.enableEligibilityTrace(lambda)
+```
+
+### Select Action
+
 At each time step, a action can be selected by the agent, by calling:
 
 ```java
@@ -39,6 +50,8 @@ If you want to limits the number of possible action at each states (say the prob
 Set<Integer> actionsAvailableAtCurrentState = world.getActionsAvailable(agent);
 int actionTaken = agent.selectAction(actionsAvailableAtCurrentState);
 ```
+
+### State-Action Update
 
 Once the world state has been updated due to the agent's selected action, its internal state-action Q matrix will be updated by calling:
 
@@ -126,6 +139,40 @@ for(int time=0; time < 1000; ++time){
  System.out.println("Agent receives Reward = "+reward);
 
  agent.update(actionId, newStateId, reward);
+}
+```
+
+### Sample code for Actor Critic Model
+
+```java
+import com.github.chen0040.rl.learning.actorcritic.ActorCriticAgent;
+import com.github.chen0040.rl.utils.Vec;
+
+int stateCount = 100;
+int actionCount = 10;
+ActorCriticAgent agent = new ActorCriticAgent(stateCount, actionCount);
+Vec stateValues = new Vec(stateCount);
+
+Random random = new Random();
+agent.start(random.nextInt(stateCount));
+for(int time=0; time < 1000; ++time){
+
+ int actionId = agent.selectAction();
+ System.out.println("Agent does action-"+actionId);
+ 
+ int newStateId = world.update(agent, actionId);
+ double reward = world.reward(agent);
+
+ System.out.println("Now the new state is " + newStateId);
+ System.out.println("Agent receives Reward = "+reward);
+
+ 
+ System.out.println("World state values changed ...");
+ for(int stateId = 0; stateId < stateCount; ++stateId){
+    stateValues.set(stateId, random.nextDouble());
+ }
+    
+ agent.update(actionId, newStateId, reward, stateValues);
 }
 ```
 

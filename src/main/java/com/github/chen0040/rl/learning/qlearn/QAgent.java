@@ -8,7 +8,7 @@ import java.util.Set;
 /**
  * Created by xschen on 9/27/2015 0027.
  */
-public class QAgent implements Cloneable, Serializable{
+public class QAgent implements Serializable{
     private QLearner learner;
     private int currentState;
     private int prevState;
