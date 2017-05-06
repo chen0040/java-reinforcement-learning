@@ -498,11 +498,6 @@
             <version>${lombok.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>gov.nist.math</groupId>
-            <artifactId>jama</artifactId>
-            <version>${jama.version}</version>
-        </dependency>
 
     </dependencies>
 

@@ -13,7 +13,7 @@ import java.util.Set;
 
 
 /**
- * Created by chen0469 on 9/27/2015 0027.
+ * Created by xschen on 9/27/2015 0027.
  */
 public class RLearner implements Serializable, Cloneable{
 
