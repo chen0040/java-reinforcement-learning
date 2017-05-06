@@ -7,8 +7,8 @@ import java.io.Serializable;
 
 /**
  * @author xschen
- * @date 9/27/2015 0027.
- * @brief Utility value of a state $U(s)$ is the expected long term reward of state $s$ given the sequence of reward and the optimal policy
+ * 9/27/2015 0027.
+ * Utility value of a state $U(s)$ is the expected long term reward of state $s$ given the sequence of reward and the optimal policy
  * Utility value $U(s)$ at state $s$ can be obtained by the Bellman equation
  * Bellman Equtation states that $U(s) = R(s) + \gamma * max_a \sum_{s'} T(s,a,s')U(s')$
  * where s' is the possible transitioned state given that action $a$ is applied at state $s$

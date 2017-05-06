@@ -10,22 +10,22 @@ import java.util.*;
 
 /**
  * @author xschen
- * @date 9/27/2015 0027.
- * @brief Q is known as the quality of state-action combination, note that it is different from utility of a state
+ * 9/27/2015 0027.
+ * Q is known as the quality of state-action combination, note that it is different from utility of a state
  */
 public class QModel {
     /**
-    *  @brief Q value for (state_id, action_id) pair
+    *  Q value for (state_id, action_id) pair
     *  Q is known as the quality of state-action combination, note that it is different from utility of a state
     */
     private Matrix Q;
     /**
-    *  @brief $\alpha[s, a]$ value for learning rate: alpha(state_id, action_id)
+    *  $\alpha[s, a]$ value for learning rate: alpha(state_id, action_id)
     */
     private Matrix alpha;
 
     /**
-     * @brief discount factor
+     * discount factor
      */
     private double gamma = 0.7;
 

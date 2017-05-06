@@ -7,7 +7,7 @@ import java.util.Set;
 
 /**
  * Created by xschen on 9/27/2015 0027.
- * @brief Implement temporal-difference learning Sarsa, which is an on-policy TD control algorithm
+ * Implement temporal-difference learning Sarsa, which is an on-policy TD control algorithm
  */
 public class SarsaAgent implements Serializable{
     private SarsaLearner learner;

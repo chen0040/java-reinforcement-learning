@@ -7,12 +7,32 @@ Package provides java implementation of reinforcement learning algorithms as des
 
 The following reinforcement learning are implemented:
 
+* R-Learn
 * Q-Learn
 * Q-Learn with eligibility trace
-* R-Learn
 * SARSA
 * SARSA with eligibility trace
 * Actor-Critic
+* Actor-Critic with eligibility trace
+
+The package also support a number of action-selection strategy:
+
+* soft-max
+* epsilon-greedy
+* greedy
+* Gibbs-soft-max
+
+# Install
+
+Add the following dependency to your POM file:
+
+```
+<dependency>
+  <groupId>com.github.chen0040</groupId>
+  <artifactId>java-reinforcement-learning</artifactId>
+  <version>1.0.1</version>
+</dependency>
+```
 
 # Usage
 
@@ -49,6 +69,13 @@ If you want to limits the number of possible action at each states (say the prob
 ```java
 Set<Integer> actionsAvailableAtCurrentState = world.getActionsAvailable(agent);
 int actionTaken = agent.selectAction(actionsAvailableAtCurrentState);
+```
+
+The agent can also change to a different action-selection policy available in com.github.chen0040.rl.actionselection package, for example, the following code
+switch the action selection policy to soft-max:
+
+```java
+agent.getLearner().setActionSelection(SoftMaxActionSelectionStrategy.class.getCanonicalName());
 ```
 
 ### State-Action Update

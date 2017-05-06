@@ -13,7 +13,7 @@ public class QAgent implements Serializable{
     private int currentState;
     private int prevState;
 
-    /** @brief action taken at prevState */
+    /** action taken at prevState */
     private int prevAction;
 
     public int getCurrentState(){

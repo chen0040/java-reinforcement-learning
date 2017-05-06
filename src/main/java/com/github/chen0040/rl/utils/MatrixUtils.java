@@ -8,10 +8,7 @@ import java.util.List;
  */
 public class MatrixUtils {
     /**
-    * @brief Convert a list of column vectors into a matrix
-    *
-    * @param[List] R
-    * @return Matrix
+    * Convert a list of column vectors into a matrix
     */
     public static Matrix matrixFromColumnVectors(List<Vec> R)
     {
