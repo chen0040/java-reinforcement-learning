@@ -22,7 +22,7 @@ public class SarsaAgentUnitTest {
       double reward = 0; //immediate reward by transiting from prevState to currentState
       Random random = new Random();
       agent.start(random.nextInt(stateCount));
-      int actionTaken = agent.selectAction();
+      int actionTaken = agent.selectAction().getIndex();
       for(int time=0; time < 1000; ++time){
 
          System.out.println("Agent does action-"+actionTaken);

@@ -1,5 +1,7 @@
 package com.github.chen0040.rl.learning.sarsa;
 
+import com.github.chen0040.rl.utils.IndexValue;
+
 import java.io.Serializable;
 import java.util.Random;
 import java.util.Set;
@@ -13,6 +15,7 @@ public class SarsaAgent implements Serializable{
     private SarsaLearner learner;
     private int currentState;
     private int currentAction;
+    private double currentValue;
     private int prevState;
     private int prevAction;
 
@@ -34,16 +37,18 @@ public class SarsaAgent implements Serializable{
         this.prevAction = -1;
     }
 
-    public int selectAction(){
+    public IndexValue selectAction(){
         return selectAction(null);
     }
 
-    public int selectAction(Set<Integer> actionsAtState){
+    public IndexValue selectAction(Set<Integer> actionsAtState){
         if(currentAction == -1){
-            currentAction = learner.selectAction(currentState, actionsAtState);
+            IndexValue iv = learner.selectAction(currentState, actionsAtState);
+            currentAction = iv.getIndex();
+            currentValue = iv.getValue();
         }
 
-        return currentAction;
+        return new IndexValue(currentAction, currentValue);
     }
 
     public void update(int actionTaken, int newState, double immediateReward){
@@ -52,7 +57,8 @@ public class SarsaAgent implements Serializable{
 
     public void update(int actionTaken, int newState, Set<Integer> actionsAtNewState, double immediateReward){
 
-        int futureAction = learner.selectAction(currentState, actionsAtNewState);
+        IndexValue iv = learner.selectAction(currentState, actionsAtNewState);
+        int futureAction = iv.getIndex();
 
         learner.update(currentState, actionTaken, newState, futureAction, immediateReward);
 

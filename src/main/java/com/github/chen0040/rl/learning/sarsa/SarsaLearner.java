@@ -89,7 +89,7 @@ public class SarsaLearner implements Serializable,Cloneable {
         double reward = 0; // reward gained by transiting from prevState to currentState
         Random random = new Random();
         int currentStateId = random.nextInt(stateCount);
-        int currentActionId = learner.selectAction(currentStateId);
+        int currentActionId = learner.selectAction(currentStateId).getIndex();
 
         for(int time=0; time < 1000; ++time){
 
@@ -101,7 +101,7 @@ public class SarsaLearner implements Serializable,Cloneable {
             System.out.println("Now the new state is " + newStateId);
             System.out.println("Controller receives Reward = " + reward);
 
-            int futureActionId = learner.selectAction(newStateId);
+            int futureActionId = learner.selectAction(newStateId).getIndex();
 
             System.out.println("Controller is expected to do action-"+futureActionId);
 
@@ -113,12 +113,11 @@ public class SarsaLearner implements Serializable,Cloneable {
     }
 
 
-    public int selectAction(int stateId, Set<Integer> actionsAtState){
-        IndexValue iv = actionSelectionStrategy.selectAction(stateId, model, actionsAtState);
-        return iv.getIndex();
+    public IndexValue selectAction(int stateId, Set<Integer> actionsAtState){
+        return actionSelectionStrategy.selectAction(stateId, model, actionsAtState);
     }
 
-    public int selectAction(int stateId){
+    public IndexValue selectAction(int stateId){
         return selectAction(stateId, null);
     }
 

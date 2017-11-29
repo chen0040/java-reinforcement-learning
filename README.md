@@ -34,9 +34,15 @@ Add the following dependency to your POM file:
 <dependency>
   <groupId>com.github.chen0040</groupId>
   <artifactId>java-reinforcement-learning</artifactId>
-  <version>1.0.2</version>
+  <version>1.0.3</version>
 </dependency>
 ```
+
+# Application Samples
+
+The application sample of this library can be found in the following repositories:
+
+* [java-reinforcement-learning-tic-tac-toe](https://github.com/chen0040/java-reinforcement-learning-tic-tac-toe) 
 
 # Usage
 
