@@ -23,7 +23,7 @@ public class QAgentUnitTest {
       agent.start(random.nextInt(stateCount));
       for(int time=0; time < 1000; ++time){
 
-         int actionId = agent.selectAction();
+         int actionId = agent.selectAction().getIndex();
          System.out.println("Agent does action-"+actionId);
 
          int newStateId = random.nextInt(actionCount);

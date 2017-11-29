@@ -1,6 +1,7 @@
 package com.github.chen0040.rl.learning.rlearn;
 
 
+import com.github.chen0040.rl.utils.IndexValue;
 import org.testng.annotations.Test;
 
 import java.util.Random;
@@ -24,7 +25,8 @@ public class RAgentUnitTest {
          agent.start(random.nextInt(stateCount));
          for(int time=0; time < 1000; ++time){
 
-            int actionId = agent.selectAction();
+             IndexValue actionValue = agent.selectAction();
+            int actionId = actionValue.getIndex();
             System.out.println("Agent does action-"+actionId);
 
             int newStateId = random.nextInt(actionCount);

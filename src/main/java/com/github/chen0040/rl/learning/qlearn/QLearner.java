@@ -87,12 +87,11 @@ public class QLearner implements Serializable,Cloneable {
         return maxQ;
     }
 
-    public int selectAction(int stateId, Set<Integer> actionsAtState){
-        IndexValue iv = actionSelectionStrategy.selectAction(stateId, model, actionsAtState);
-        return iv.getIndex();
+    public IndexValue selectAction(int stateId, Set<Integer> actionsAtState){
+        return actionSelectionStrategy.selectAction(stateId, model, actionsAtState);
     }
 
-    public int selectAction(int stateId){
+    public IndexValue selectAction(int stateId){
         return selectAction(stateId, null);
     }
 

@@ -1,5 +1,7 @@
 package com.github.chen0040.rl.learning.rlearn;
 
+import com.github.chen0040.rl.utils.IndexValue;
+
 import java.io.Serializable;
 import java.util.Random;
 import java.util.Set;
@@ -12,6 +14,7 @@ public class RAgent implements Serializable{
     private RLearner learner;
     private int currentState;
     private int currentAction;
+    private double currentValue;
 
     public int getCurrentState(){
         return currentState;
@@ -48,15 +51,18 @@ public class RAgent implements Serializable{
         return false;
     }
 
-    public int selectAction(){
+    public IndexValue selectAction(){
         return selectAction(null);
     }
 
-    public int selectAction(Set<Integer> actionsAtState){
+    public IndexValue selectAction(Set<Integer> actionsAtState){
+
         if(currentAction==-1){
-            currentAction = learner.selectAction(currentState, actionsAtState);
+            IndexValue iv = learner.selectAction(currentState, actionsAtState);
+            currentAction = iv.getIndex();
+            currentValue = iv.getValue();
         }
-        return currentAction;
+        return new IndexValue(currentAction, currentValue);
     }
 
     public void update(int newState, double immediateReward){

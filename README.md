@@ -34,7 +34,7 @@ Add the following dependency to your POM file:
 <dependency>
   <groupId>com.github.chen0040</groupId>
   <artifactId>java-reinforcement-learning</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
 </dependency>
 ```
 
@@ -65,14 +65,14 @@ agent.enableEligibilityTrace(lambda)
 At each time step, a action can be selected by the agent, by calling:
 
 ```java
-int actionId = agent.selectAction();
+int actionId = agent.selectAction().getIndex();
 ```
 
 If you want to limits the number of possible action at each states (say the problem restrict the actions avaliable at different state), then call:
 
 ```java
 Set<Integer> actionsAvailableAtCurrentState = world.getActionsAvailable(agent);
-int actionTaken = agent.selectAction(actionsAvailableAtCurrentState);
+int actionTaken = agent.selectAction(actionsAvailableAtCurrentState).getIndex();
 ```
 
 The agent can also change to a different action-selection policy available in com.github.chen0040.rl.actionselection package, for example, the following code
@@ -108,7 +108,7 @@ Random random = new Random();
 agent.start(random.nextInt(stateCount));
 for(int time=0; time < 1000; ++time){
 
- int actionId = agent.selectAction();
+ int actionId = agent.selectAction().getIndex();
  System.out.println("Agent does action-"+actionId);
  
  int newStateId = world.update(agent, actionId);
@@ -134,7 +134,7 @@ Random random = new Random();
 agent.start(random.nextInt(stateCount));
 for(int time=0; time < 1000; ++time){
 
- int actionId = agent.selectAction();
+ int actionId = agent.selectAction().getIndex();
  System.out.println("Agent does action-"+actionId);
  
  int newStateId = world.update(agent, actionId);
@@ -160,7 +160,7 @@ Random random = new Random();
 agent.start(random.nextInt(stateCount));
 for(int time=0; time < 1000; ++time){
 
- int actionId = agent.selectAction();
+ int actionId = agent.selectAction().getIndex();
  System.out.println("Agent does action-"+actionId);
  
  int newStateId = world.update(agent, actionId);
@@ -188,7 +188,7 @@ Random random = new Random();
 agent.start(random.nextInt(stateCount));
 for(int time=0; time < 1000; ++time){
 
- int actionId = agent.selectAction();
+ int actionId = agent.selectAction().getIndex();
  System.out.println("Agent does action-"+actionId);
  
  int newStateId = world.update(agent, actionId);

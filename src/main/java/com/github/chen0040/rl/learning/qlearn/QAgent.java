@@ -1,5 +1,7 @@
 package com.github.chen0040.rl.learning.qlearn;
 
+import com.github.chen0040.rl.utils.IndexValue;
+
 import java.io.Serializable;
 import java.util.Random;
 import java.util.Set;
@@ -34,11 +36,11 @@ public class QAgent implements Serializable{
         this.prevState = -1;
     }
 
-    public int selectAction(){
+    public IndexValue selectAction(){
         return learner.selectAction(currentState);
     }
 
-    public int selectAction(Set<Integer> actionsAtState){
+    public IndexValue selectAction(Set<Integer> actionsAtState){
         return learner.selectAction(currentState, actionsAtState);
     }
 

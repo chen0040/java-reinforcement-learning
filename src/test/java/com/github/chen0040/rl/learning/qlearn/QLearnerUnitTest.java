@@ -25,7 +25,7 @@ public class QLearnerUnitTest {
       int currentStateId = random.nextInt(stateCount);
       for(int time=0; time < 1000; ++time){
 
-         int actionId = learner.selectAction(currentStateId);
+         int actionId = learner.selectAction(currentStateId).getIndex();
          System.out.println("Controller does action-"+actionId);
 
          int newStateId = random.nextInt(actionCount);
