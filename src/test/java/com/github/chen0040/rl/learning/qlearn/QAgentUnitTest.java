@@ -1,6 +1,7 @@
 package com.github.chen0040.rl.learning.qlearn;
 
 
+import com.github.chen0040.rl.actionselection.SoftMaxActionSelectionStrategy;
 import org.testng.annotations.Test;
 
 import java.util.Random;
@@ -18,6 +19,8 @@ public class QAgentUnitTest {
       int stateCount = 100;
       int actionCount = 10;
       QAgent agent = new QAgent(stateCount, actionCount);
+
+      agent.getLearner().setActionSelection(SoftMaxActionSelectionStrategy.class.getCanonicalName());
 
       Random random = new Random();
       agent.start(random.nextInt(stateCount));

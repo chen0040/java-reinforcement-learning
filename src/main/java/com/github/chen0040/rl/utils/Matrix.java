@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * Created by xschen on 9/27/2015 0027.
  */
-public class Matrix implements Serializable, Cloneable {
+public class Matrix implements Serializable {
     private HashMap<Integer, Vec> rows = new HashMap<Integer, Vec>();
     private int rowCount;
     private int columnCount;
@@ -72,8 +72,7 @@ public class Matrix implements Serializable, Cloneable {
         return false;
     }
 
-    @Override
-    public Object clone(){
+    public Matrix makeCopy(){
         Matrix clone = new Matrix(rowCount, columnCount);
         clone.copy(this);
         return clone;
@@ -87,7 +86,7 @@ public class Matrix implements Serializable, Cloneable {
         rows.clear();
 
         for(Map.Entry<Integer, Vec> entry : rows.entrySet()){
-          rows.put(entry.getKey(), (Vec)entry.getValue().clone());
+          rows.put(entry.getKey(), entry.getValue().makeCopy());
         }
     }
 

@@ -15,9 +15,13 @@ public class ActionSelectionStrategyFactory {
         for(int i=0; i < comps.length; ++i){
             String comp = comps[i];
             String[] field = comp.split("=");
+            if(field.length < 2) continue;
             String fieldname = field[0].trim();
             String fieldvalue = field[1].trim();
             attributes.put(fieldname, fieldvalue);
+        }
+        if(attributes.isEmpty()){
+            attributes.put("prototype", conf);
         }
 
         String prototype = attributes.get("prototype");

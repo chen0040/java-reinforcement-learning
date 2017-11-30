@@ -80,8 +80,8 @@ public class QModel {
         gamma = rhs.gamma;
         stateCount = rhs.stateCount;
         actionCount = rhs.actionCount;
-        Q = rhs.Q==null ? null : (Matrix)rhs.Q.clone();
-        alpha = rhs.alpha == null ? null : (Matrix)rhs.alpha.clone();
+        Q = rhs.Q==null ? null : rhs.Q.makeCopy();
+        alpha = rhs.alpha == null ? null : rhs.alpha.makeCopy();
     }
 
     public Matrix getQ() {

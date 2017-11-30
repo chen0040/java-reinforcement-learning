@@ -42,7 +42,7 @@ public class SarsaLambdaLearner extends SarsaLearner {
 
         SarsaLambdaLearner rhs2 = (SarsaLambdaLearner)rhs;
         lambda = rhs2.lambda;
-        e = (Matrix) rhs2.e.clone();
+        e = rhs2.e.makeCopy();
         traceUpdateMode = rhs2.traceUpdateMode;
     }
 

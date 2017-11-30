@@ -43,7 +43,7 @@ public class QLambdaLearner extends QLearner {
 
         QLambdaLearner rhs2 = (QLambdaLearner)rhs;
         lambda = rhs2.lambda;
-        e = (Matrix) rhs2.e.clone();
+        e = rhs2.e.makeCopy();
         traceUpdateMode = rhs2.traceUpdateMode;
     }
 

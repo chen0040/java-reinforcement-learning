@@ -57,7 +57,7 @@ public class UtilityModel implements Serializable {
     }
 
     public void copy(UtilityModel rhs){
-        U = rhs.U==null ? null : (Vec)rhs.U.clone();
+        U = rhs.U==null ? null : rhs.U.makeCopy();
         actionCount = rhs.actionCount;
         stateCount = rhs.stateCount;
     }

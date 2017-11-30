@@ -64,7 +64,7 @@ public class ActorCriticLambdaLearner extends ActorCriticLearner {
         super.copy(rhs);
 
         ActorCriticLambdaLearner rhs2 = (ActorCriticLambdaLearner)rhs;
-        e = (Matrix)rhs2.e.clone();
+        e = rhs2.e.makeCopy();
         lambda = rhs2.lambda;
         traceUpdateMode = rhs2.traceUpdateMode;
     }

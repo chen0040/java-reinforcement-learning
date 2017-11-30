@@ -1,5 +1,8 @@
 package com.github.chen0040.rl.utils;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
@@ -10,8 +13,10 @@ import java.util.Set;
 /**
  * Created by xschen on 9/27/2015 0027.
  */
-public class Vec implements Serializable, Cloneable {
-    private HashMap<Integer, Double> data = new HashMap<Integer, Double>();
+@Getter
+@Setter
+public class Vec implements Serializable {
+    private Map<Integer, Double> data = new HashMap<Integer, Double>();
     private int dimension;
     private double defaultValue;
     private int id = -1;
@@ -40,8 +45,7 @@ public class Vec implements Serializable, Cloneable {
         }
     }
 
-    @Override
-    public Object clone(){
+    public Vec makeCopy(){
         Vec clone = new Vec(dimension);
         clone.copy(this);
         return clone;
@@ -67,13 +71,6 @@ public class Vec implements Serializable, Cloneable {
         }
     }
 
-    public int getId(){
-        return id;
-    }
-
-    public void setId(int id){
-        this.id = id;
-    }
 
     public double get(int i){
         return data.getOrDefault(i, defaultValue);
@@ -170,15 +167,7 @@ public class Vec implements Serializable, Cloneable {
         return iv;
     }
 
-    public int getDimension(){
-        return dimension;
-    }
 
-    public double getDefaultValue() { return defaultValue;}
-
-    public HashMap<Integer, Double> getData(){
-        return data;
-    }
 
     public Vec projectOrthogonal(Iterable<Vec> vlist) {
         Vec b = this;
@@ -223,7 +212,7 @@ public class Vec implements Serializable, Cloneable {
     }
 
     public Vec multiply(double rhs){
-        Vec clone = (Vec)this.clone();
+        Vec clone = (Vec)this.makeCopy();
         for(Integer i : data.keySet()){
             clone.data.put(i, rhs * data.get(i));
         }
