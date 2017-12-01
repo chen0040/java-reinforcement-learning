@@ -1,10 +1,13 @@
 package com.github.chen0040.rl.learning.qlearn;
 
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.testng.annotations.Test;
 
 import java.util.Random;
 
+import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.testng.Assert.*;
 
 
@@ -13,14 +16,38 @@ import static org.testng.Assert.*;
  */
 public class QLearnerUnitTest {
 
+   private static final int stateCount = 100;
+   private static final int actionCount = 10;
+
    @Test
-   public void test_q_learn(){
-      int stateCount = 100;
-      int actionCount = 10;
+   public void testJsonSerialization() {
 
       QLearner learner = new QLearner(stateCount, actionCount);
 
+      run(learner);
 
+      String json = JSON.toJSONString(learner, SerializerFeature.BrowserCompatible, SerializerFeature.PrettyFormat);
+
+      System.out.println(json);
+
+      QLearner learner2 = JSON.parseObject(json, QLearner.class);
+
+      assertThat(learner.getModel()).isEqualTo(learner2.getModel());
+      assertThat(learner.getActionSelection()).isEqualTo(learner2.getActionSelection());
+
+   }
+
+   @Test
+   public void test_q_learn(){
+
+
+      QLearner learner = new QLearner(stateCount, actionCount);
+
+      run(learner);
+
+   }
+
+   private void run(QLearner learner) {
       Random random = new Random();
       int currentStateId = random.nextInt(stateCount);
       for(int time=0; time < 1000; ++time){
