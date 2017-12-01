@@ -1,12 +1,15 @@
 package com.github.chen0040.rl.learning.rlearn;
 
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.github.chen0040.rl.actionselection.AbstractActionSelectionStrategy;
 import com.github.chen0040.rl.actionselection.ActionSelectionStrategy;
 import com.github.chen0040.rl.actionselection.ActionSelectionStrategyFactory;
 import com.github.chen0040.rl.actionselection.EpsilonGreedyActionSelectionStrategy;
 import com.github.chen0040.rl.models.QModel;
 import com.github.chen0040.rl.utils.IndexValue;
+import lombok.Getter;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -21,6 +24,14 @@ public class RLearner implements Serializable, Cloneable{
     private ActionSelectionStrategy actionSelectionStrategy;
     private double rho;
     private double beta;
+
+    public String toJson() {
+        return JSON.toJSONString(this, SerializerFeature.BrowserCompatible);
+    }
+
+    public static RLearner fromJson(String json){
+        return JSON.parseObject(json, RLearner.class);
+    }
 
     public RLearner makeCopy(){
         RLearner clone = new RLearner();

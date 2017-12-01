@@ -34,7 +34,7 @@ Add the following dependency to your POM file:
 <dependency>
   <groupId>com.github.chen0040</groupId>
   <artifactId>java-reinforcement-learning</artifactId>
-  <version>1.0.3</version>
+  <version>1.0.4</version>
 </dependency>
 ```
 
@@ -406,5 +406,21 @@ for(int i=moves.size()-1; i >= 0; --i){
     agent.update(current_move.oldState, current_move.action, current_move.newState, next_move.action, current_move.reward);
 }
 
+```
+
+### Save and Load RL models
+
+To save the trained RL model (say QLeanrer):
+
+```java
+QLearner learner = new QLearner(stateCount, actionCount);
+train(learner);
+String json = learner.toJson();
+```
+
+To load the trained RL model from json:
+
+```java
+QLearner learner = QLearn.fromJson(json);
 ```
 

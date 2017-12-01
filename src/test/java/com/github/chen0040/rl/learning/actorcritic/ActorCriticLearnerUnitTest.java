@@ -1,7 +1,5 @@
 package com.github.chen0040.rl.learning.actorcritic;
 
-
-import com.alibaba.fastjson.JSON;
 import com.github.chen0040.rl.utils.Vec;
 import org.testng.annotations.Test;
 
@@ -43,5 +41,10 @@ public class ActorCriticLearnerUnitTest {
          learner.update(currentStateId, actionId, newStateId, reward, stateValues::get);
       }
 
+      ActorCriticLearner learner2 = ActorCriticLearner.fromJson(learner.toJson());
+
+      assertThat(learner2.getP()).isEqualTo(learner.getP());
+      assertThat(learner2.getActionSelection()).isEqualTo(learner.getActionSelection());
+      assertThat(learner2).isEqualTo(learner);
    }
 }

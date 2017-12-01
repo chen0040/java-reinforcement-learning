@@ -6,6 +6,7 @@ import org.testng.annotations.Test;
 
 import java.util.Random;
 
+import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.testng.Assert.*;
 
 
@@ -37,6 +38,12 @@ public class RAgentUnitTest {
 
             agent.update(newStateId, reward);
          }
+
+         RLearner learner = agent.getLearner();
+       RLearner learner2 = RLearner.fromJson(learner.toJson());
+
+       assertThat(learner).isEqualTo(learner2);
+
 
    }
 }

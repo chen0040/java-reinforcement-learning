@@ -40,7 +40,7 @@ public class ActionSelectionStrategyFactory {
     }
 
     public static String serialize(ActionSelectionStrategy strategy){
-        HashMap<String, String> attributes = strategy.getAttributes();
+        Map<String, String> attributes = strategy.getAttributes();
         attributes.put("prototype", strategy.getPrototype());
 
         StringBuilder sb = new StringBuilder();

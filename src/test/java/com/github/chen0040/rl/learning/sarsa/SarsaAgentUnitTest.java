@@ -5,6 +5,7 @@ import org.testng.annotations.Test;
 
 import java.util.Random;
 
+import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.testng.Assert.*;
 
 
@@ -35,5 +36,11 @@ public class SarsaAgentUnitTest {
 
          agent.update(actionTaken, newStateId, reward);
       }
+
+      SarsaLearner learner = agent.getLearner();
+
+      SarsaLearner learner2 = SarsaLearner.fromJson(learner.toJson());
+
+      assertThat(learner2).isEqualTo(learner);
    }
 }

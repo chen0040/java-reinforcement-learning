@@ -5,6 +5,7 @@ import com.github.chen0040.rl.models.QModel;
 import com.github.chen0040.rl.models.UtilityModel;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 
@@ -14,7 +15,7 @@ import java.util.Set;
 public abstract class AbstractActionSelectionStrategy implements ActionSelectionStrategy {
 
     private String prototype;
-    protected HashMap<String, String> attributes = new HashMap<String, String>();
+    protected Map<String, String> attributes = new HashMap<String, String>();
 
     public String getPrototype(){
         return prototype;
@@ -40,8 +41,31 @@ public abstract class AbstractActionSelectionStrategy implements ActionSelection
         }
     }
 
-    public HashMap<String, String> getAttributes(){
+    public Map<String, String> getAttributes(){
         return attributes;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        ActionSelectionStrategy rhs = (ActionSelectionStrategy)obj;
+        if(!prototype.equalsIgnoreCase(rhs.getPrototype())) return false;
+        for(Map.Entry<String, String> entry : rhs.getAttributes().entrySet()) {
+            if(!attributes.containsKey(entry.getKey())) {
+                return false;
+            }
+            if(!attributes.get(entry.getKey()).equals(entry.getValue())){
+                return false;
+            }
+        }
+        for(Map.Entry<String, String> entry : attributes.entrySet()) {
+            if(!rhs.getAttributes().containsKey(entry.getKey())) {
+                return false;
+            }
+            if(!rhs.getAttributes().get(entry.getKey()).equals(entry.getValue())){
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override

@@ -1,6 +1,8 @@
 package com.github.chen0040.rl.learning.actorcritic;
 
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.github.chen0040.rl.actionselection.AbstractActionSelectionStrategy;
 import com.github.chen0040.rl.actionselection.ActionSelectionStrategy;
 import com.github.chen0040.rl.actionselection.ActionSelectionStrategyFactory;
@@ -22,7 +24,13 @@ public class ActorCriticLearner implements Serializable{
     protected QModel P;
     protected ActionSelectionStrategy actionSelectionStrategy;
 
+    public String toJson() {
+        return JSON.toJSONString(this, SerializerFeature.BrowserCompatible);
+    }
 
+    public static ActorCriticLearner fromJson(String json){
+        return JSON.parseObject(json, ActorCriticLearner.class);
+    }
 
     public Object makeCopy(){
         ActorCriticLearner clone = new ActorCriticLearner();
@@ -39,7 +47,7 @@ public class ActorCriticLearner implements Serializable{
     public boolean equals(Object obj){
         if(obj != null && obj instanceof ActorCriticLearner){
             ActorCriticLearner rhs = (ActorCriticLearner)obj;
-            return P.equals(rhs.P) && actionSelectionStrategy.equals(rhs.actionSelectionStrategy);
+            return P.equals(rhs.P) && getActionSelection().equals(rhs.getActionSelection());
         }
         return false;
     }

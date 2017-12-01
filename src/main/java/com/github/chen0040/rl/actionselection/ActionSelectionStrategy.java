@@ -6,6 +6,7 @@ import com.github.chen0040.rl.models.UtilityModel;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 
@@ -16,5 +17,5 @@ public interface ActionSelectionStrategy extends Serializable, Cloneable {
     IndexValue selectAction(int stateId, QModel model, Set<Integer> actionsAtState);
     IndexValue selectAction(int stateId, UtilityModel model, Set<Integer> actionsAtState);
     String getPrototype();
-    HashMap<String, String> getAttributes();
+    Map<String, String> getAttributes();
 }
