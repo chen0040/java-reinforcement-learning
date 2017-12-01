@@ -26,11 +26,10 @@ public class QLearnerUnitTest {
 
       run(learner);
 
-      String json = JSON.toJSONString(learner, SerializerFeature.BrowserCompatible, SerializerFeature.PrettyFormat);
+      String json = learner.toJson();
 
-      System.out.println(json);
 
-      QLearner learner2 = JSON.parseObject(json, QLearner.class);
+      QLearner learner2 = QLearner.fromJson(json);
 
       assertThat(learner.getModel()).isEqualTo(learner2.getModel());
 

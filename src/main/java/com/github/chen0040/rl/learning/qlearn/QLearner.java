@@ -1,7 +1,9 @@
 package com.github.chen0040.rl.learning.qlearn;
 
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.github.chen0040.rl.actionselection.AbstractActionSelectionStrategy;
 import com.github.chen0040.rl.actionselection.ActionSelectionStrategy;
 import com.github.chen0040.rl.actionselection.ActionSelectionStrategyFactory;
@@ -28,6 +30,14 @@ public class QLearner implements Serializable,Cloneable {
         QLearner clone = new QLearner();
         clone.copy(this);
         return clone;
+    }
+
+    public String toJson() {
+        return JSON.toJSONString(this, SerializerFeature.BrowserCompatible);
+    }
+
+    public static QLearner fromJson(String json){
+        return JSON.parseObject(json, QLearner.class);
     }
 
     public void copy(QLearner rhs){

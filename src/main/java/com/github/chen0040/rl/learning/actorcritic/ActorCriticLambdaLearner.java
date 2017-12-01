@@ -1,6 +1,8 @@
 package com.github.chen0040.rl.learning.actorcritic;
 
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.github.chen0040.rl.models.EligibilityTraceUpdateMode;
 import com.github.chen0040.rl.utils.Matrix;
 
@@ -24,6 +26,8 @@ public class ActorCriticLambdaLearner extends ActorCriticLearner {
         super(stateCount, actionCount);
         e = new Matrix(stateCount, actionCount);
     }
+
+
 
     public ActorCriticLambdaLearner(ActorCriticLearner learner){
         copy(learner);
@@ -52,8 +56,7 @@ public class ActorCriticLambdaLearner extends ActorCriticLearner {
         this.lambda = lambda;
     }
 
-    @Override
-    public Object clone(){
+    public ActorCriticLambdaLearner makeCopy(){
         ActorCriticLambdaLearner clone = new ActorCriticLambdaLearner();
         clone.copy(this);
         return clone;

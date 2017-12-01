@@ -1,6 +1,8 @@
 package com.github.chen0040.rl.learning.sarsa;
 
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.github.chen0040.rl.actionselection.AbstractActionSelectionStrategy;
 import com.github.chen0040.rl.actionselection.ActionSelectionStrategy;
 import com.github.chen0040.rl.actionselection.ActionSelectionStrategyFactory;
@@ -21,6 +23,14 @@ import java.util.Set;
 public class SarsaLearner implements Serializable,Cloneable {
     protected QModel model;
     private ActionSelectionStrategy actionSelectionStrategy;
+
+    public String toJson() {
+        return JSON.toJSONString(this, SerializerFeature.BrowserCompatible);
+    }
+
+    public static SarsaLearner fromJson(String json){
+        return JSON.parseObject(json, SarsaLearner.class);
+    }
 
     public SarsaLearner makeCopy(){
         SarsaLearner clone = new SarsaLearner();

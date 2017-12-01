@@ -18,14 +18,13 @@ import java.util.function.Function;
 /**
  * Created by chen0469 on 9/28/2015 0028.
  */
-public class ActorCriticLearner implements Cloneable, Serializable{
+public class ActorCriticLearner implements Serializable{
     protected QModel P;
     protected ActionSelectionStrategy actionSelectionStrategy;
 
 
 
-    @Override
-    public Object clone(){
+    public Object makeCopy(){
         ActorCriticLearner clone = new ActorCriticLearner();
         clone.copy(this);
         return clone;

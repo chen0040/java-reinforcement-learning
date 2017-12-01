@@ -1,13 +1,13 @@
 package com.github.chen0040.rl.learning.actorcritic;
 
 
+import com.alibaba.fastjson.JSON;
 import com.github.chen0040.rl.utils.Vec;
 import org.testng.annotations.Test;
 
 import java.util.Random;
 
-import static org.testng.Assert.*;
-
+import static org.assertj.core.api.Java6Assertions.assertThat;
 
 /**
  * Created by xschen on 6/5/2017.
@@ -42,5 +42,6 @@ public class ActorCriticLearnerUnitTest {
 
          learner.update(currentStateId, actionId, newStateId, reward, stateValues::get);
       }
+
    }
 }
