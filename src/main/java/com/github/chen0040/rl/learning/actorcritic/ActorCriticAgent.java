@@ -56,7 +56,7 @@ public class ActorCriticAgent implements Serializable {
     }
 
     public void copy(ActorCriticAgent rhs){
-        learner = (ActorCriticLearner)rhs.learner.clone();
+        learner = (ActorCriticLearner)rhs.learner.makeCopy();
         prevAction = rhs.prevAction;
         prevState = rhs.prevState;
         currentState = rhs.currentState;
