@@ -18,6 +18,7 @@ public class ActionSelectionStrategyFactory {
             if(field.length < 2) continue;
             String fieldname = field[0].trim();
             String fieldvalue = field[1].trim();
+
             attributes.put(fieldname, fieldvalue);
         }
         if(attributes.isEmpty()){

@@ -1,6 +1,7 @@
 package com.github.chen0040.rl.learning.qlearn;
 
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.github.chen0040.rl.actionselection.AbstractActionSelectionStrategy;
 import com.github.chen0040.rl.actionselection.ActionSelectionStrategy;
 import com.github.chen0040.rl.actionselection.ActionSelectionStrategyFactory;
@@ -20,7 +21,8 @@ import java.util.Set;
  */
 public class QLearner implements Serializable,Cloneable {
     protected QModel model;
-    private ActionSelectionStrategy actionSelectionStrategy;
+
+    private ActionSelectionStrategy actionSelectionStrategy = new EpsilonGreedyActionSelectionStrategy();
 
     public QLearner makeCopy(){
         QLearner clone = new QLearner();
@@ -29,7 +31,7 @@ public class QLearner implements Serializable,Cloneable {
     }
 
     public void copy(QLearner rhs){
-        model = (QModel)rhs.model.clone();
+        model = rhs.model.makeCopy();
         actionSelectionStrategy = (ActionSelectionStrategy)((AbstractActionSelectionStrategy) rhs.actionSelectionStrategy).clone();
     }
 
@@ -50,6 +52,7 @@ public class QLearner implements Serializable,Cloneable {
     public void setModel(QModel model) {
         this.model = model;
     }
+
 
     public String getActionSelection() {
         return ActionSelectionStrategyFactory.serialize(actionSelectionStrategy);

@@ -22,7 +22,7 @@ public class QModelUnitTest {
 
         assertThat(model).isEqualTo(model2);
         assertThat(model.getQ()).isEqualTo(model2.getQ());
-        assertThat(model.getAlpha()).isEqualTo(model2.getAlpha());
+        assertThat(model.getAlphaMatrix()).isEqualTo(model2.getAlphaMatrix());
         assertThat(model.getStateCount()).isEqualTo(model2.getStateCount());
         assertThat(model.getActionCount()).isEqualTo(model2.getActionCount());
         assertThat(model.getGamma()).isEqualTo(model2.getGamma());

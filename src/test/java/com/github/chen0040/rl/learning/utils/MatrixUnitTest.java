@@ -1,6 +1,7 @@
 package com.github.chen0040.rl.learning.utils;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.github.chen0040.rl.utils.Matrix;
 import org.testng.annotations.Test;
 
@@ -22,12 +23,14 @@ public class MatrixUnitTest {
         assertThat(matrix.get(0, 0)).isEqualTo(10);
         assertThat(matrix.get(4, 2)).isEqualTo(2);
         assertThat(matrix.get(3, 3)).isEqualTo(2);
-        assertThat(matrix.get(5, 5)).isEqualTo(0);
+        assertThat(matrix.get(4, 4)).isEqualTo(0);
 
         assertThat(matrix.getRowCount()).isEqualTo(10);
         assertThat(matrix.getColumnCount()).isEqualTo(10);
 
-        String json = JSON.toJSONString(matrix);
+        String json = JSON.toJSONString(matrix, SerializerFeature.PrettyFormat);
+
+        System.out.println(json);
         Matrix matrix2 = JSON.parseObject(json, Matrix.class);
         assertThat(matrix).isEqualTo(matrix2);
 

@@ -35,6 +35,9 @@ public abstract class AbstractActionSelectionStrategy implements ActionSelection
 
     public AbstractActionSelectionStrategy(HashMap<String, String> attributes){
         this.attributes = attributes;
+        if(attributes.containsKey("prototype")){
+            this.prototype = attributes.get("prototype");
+        }
     }
 
     public HashMap<String, String> getAttributes(){

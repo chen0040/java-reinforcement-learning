@@ -32,7 +32,7 @@ public class ActorCriticLearner implements Cloneable, Serializable{
     }
 
     public void copy(ActorCriticLearner rhs){
-        P = (QModel)rhs.P.clone();
+        P = rhs.P.makeCopy();
         actionSelectionStrategy = (ActionSelectionStrategy)((AbstractActionSelectionStrategy)rhs.actionSelectionStrategy).clone();
     }
 

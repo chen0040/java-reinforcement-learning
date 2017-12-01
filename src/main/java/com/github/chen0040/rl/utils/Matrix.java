@@ -1,5 +1,9 @@
 package com.github.chen0040.rl.utils;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,8 +14,10 @@ import java.util.Map;
 /**
  * Created by xschen on 9/27/2015 0027.
  */
+@Getter
+@Setter
 public class Matrix implements Serializable {
-    private HashMap<Integer, Vec> rows = new HashMap<Integer, Vec>();
+    private Map<Integer, Vec> rows = new HashMap<>();
     private int rowCount;
     private int columnCount;
     private double defaultValue;
@@ -51,17 +57,29 @@ public class Matrix implements Serializable {
                 return false;
             }
 
-            for(Integer index : rows.keySet()){
-                if(!rhs2.rows.containsKey(index)) return false;
-                if(!rows.get(index).equals(rhs2.rows.get(index))){
-                    return false;
-                }
-            }
-
-            if(defaultValue != rhs2.defaultValue){
-                for(int i=0; i < rowCount; ++i){
-                    if(!rows.containsKey(i)) {
+            if(defaultValue == rhs2.defaultValue) {
+                for (Integer index : rows.keySet()) {
+                    if (!rhs2.rows.containsKey(index)) return false;
+                    if (!rows.get(index).equals(rhs2.rows.get(index))) {
+                        System.out.println("failed!");
                         return false;
+                    }
+                }
+
+                for (Integer index : rhs2.rows.keySet()) {
+                    if (!rows.containsKey(index)) return false;
+                    if (!rhs2.rows.get(index).equals(rows.get(index))) {
+                        System.out.println("failed! 22");
+                        return false;
+                    }
+                }
+            } else {
+
+                for(int i=0; i < rowCount; ++i) {
+                    for(int j=0; j < columnCount; ++j) {
+                        if(this.get(i, j) != rhs2.get(i, j)){
+                            return false;
+                        }
                     }
                 }
             }
@@ -85,37 +103,21 @@ public class Matrix implements Serializable {
 
         rows.clear();
 
-        for(Map.Entry<Integer, Vec> entry : rows.entrySet()){
+        for(Map.Entry<Integer, Vec> entry : rhs.rows.entrySet()){
           rows.put(entry.getKey(), entry.getValue().makeCopy());
         }
     }
 
-    public int getRowCount() {
-        return rowCount;
-    }
 
-    public int getColumnCount() {
-        return columnCount;
-    }
-
-    public double getDefaultValue(){
-        return defaultValue;
-    }
-
-    public void setDefaultValue(double defaultValue){
-        this.defaultValue = defaultValue;
-    }
 
     public void set(int rowIndex, int columnIndex, double value){
-        Vec row = getRow(rowIndex);
+        Vec row = rowAt(rowIndex);
         row.set(columnIndex, value);
         if(rowIndex >= rowCount) { rowCount = rowIndex+1; }
         if(columnIndex >= columnCount) { columnCount = columnIndex + 1; }
     }
 
-    public HashMap<Integer, Vec> getRows(){
-        return rows;
-    }
+
 
     public Matrix(int rowCount, int columnCount){
         this.rowCount = rowCount;
@@ -123,7 +125,7 @@ public class Matrix implements Serializable {
         this.defaultValue = 0;
     }
 
-    public Vec getRow(int rowIndex){
+    public Vec rowAt(int rowIndex){
         Vec row = rows.get(rowIndex);
         if(row == null){
             row = new Vec(columnCount);
@@ -142,7 +144,7 @@ public class Matrix implements Serializable {
     }
 
     public double get(int rowIndex, int columnIndex) {
-        Vec row=getRow(rowIndex);
+        Vec row= rowAt(rowIndex);
         return row.get(columnIndex);
     }
 
@@ -198,6 +200,7 @@ public class Matrix implements Serializable {
         return result;
     }
 
+    @JSONField(serialize = false)
     public boolean isSymmetric(){
         if (getRowCount() != getColumnCount()) return false;
 

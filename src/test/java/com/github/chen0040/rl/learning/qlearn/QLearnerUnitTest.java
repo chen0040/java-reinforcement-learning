@@ -33,6 +33,7 @@ public class QLearnerUnitTest {
       QLearner learner2 = JSON.parseObject(json, QLearner.class);
 
       assertThat(learner.getModel()).isEqualTo(learner2.getModel());
+
       assertThat(learner.getActionSelection()).isEqualTo(learner2.getActionSelection());
 
    }

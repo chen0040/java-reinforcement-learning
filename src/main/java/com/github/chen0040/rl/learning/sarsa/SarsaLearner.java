@@ -29,7 +29,7 @@ public class SarsaLearner implements Serializable,Cloneable {
     }
 
     public void copy(SarsaLearner rhs){
-        model = (QModel)rhs.model.clone();
+        model = rhs.model.makeCopy();
         actionSelectionStrategy = (ActionSelectionStrategy)((AbstractActionSelectionStrategy) rhs.actionSelectionStrategy).clone();
     }
 

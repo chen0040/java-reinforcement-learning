@@ -29,7 +29,7 @@ public class RLearner implements Serializable, Cloneable{
     }
 
     public void copy(RLearner rhs){
-        model = (QModel)rhs.model.clone();
+        model = rhs.model.makeCopy();
         actionSelectionStrategy = (ActionSelectionStrategy)((AbstractActionSelectionStrategy)rhs.actionSelectionStrategy).clone();
         rho = rhs.rho;
         beta = rhs.beta;

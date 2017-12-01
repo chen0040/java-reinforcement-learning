@@ -4,6 +4,8 @@ package com.github.chen0040.rl.models;
 import com.github.chen0040.rl.utils.IndexValue;
 import com.github.chen0040.rl.utils.Matrix;
 import com.github.chen0040.rl.utils.Vec;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.*;
 
@@ -13,6 +15,8 @@ import java.util.*;
  * 9/27/2015 0027.
  * Q is known as the quality of state-action combination, note that it is different from utility of a state
  */
+@Getter
+@Setter
 public class QModel {
     /**
     *  Q value for (state_id, action_id) pair
@@ -22,7 +26,7 @@ public class QModel {
     /**
     *  $\alpha[s, a]$ value for learning rate: alpha(state_id, action_id)
     */
-    private Matrix alpha;
+    private Matrix alphaMatrix;
 
     /**
      * discount factor
@@ -36,9 +40,9 @@ public class QModel {
         this.stateCount = stateCount;
         this.actionCount = actionCount;
         Q = new Matrix(stateCount,actionCount);
-        alpha = new Matrix(stateCount, actionCount);
+        alphaMatrix = new Matrix(stateCount, actionCount);
         Q.setAll(initialQ);
-        alpha.setAll(0.1);
+        alphaMatrix.setAll(0.1);
     }
 
     public QModel(int stateCount, int actionCount){
@@ -61,16 +65,15 @@ public class QModel {
             if(stateCount != rhs2.stateCount || actionCount != rhs2.actionCount) return false;
 
             if((Q!=null && rhs2.Q==null) || (Q==null && rhs2.Q !=null)) return false;
-            if((alpha!=null && rhs2.alpha==null) || (alpha==null && rhs2.alpha!=null)) return false;
+            if((alphaMatrix !=null && rhs2.alphaMatrix ==null) || (alphaMatrix ==null && rhs2.alphaMatrix !=null)) return false;
 
-            return !((Q != null && !Q.equals(rhs2.Q)) || (alpha != null && !alpha.equals(rhs2.alpha)));
+            return !((Q != null && !Q.equals(rhs2.Q)) || (alphaMatrix != null && !alphaMatrix.equals(rhs2.alphaMatrix)));
 
         }
         return false;
     }
 
-    @Override
-    public Object clone(){
+    public QModel makeCopy(){
         QModel clone = new QModel();
         clone.copy(this);
         return clone;
@@ -81,59 +84,32 @@ public class QModel {
         stateCount = rhs.stateCount;
         actionCount = rhs.actionCount;
         Q = rhs.Q==null ? null : rhs.Q.makeCopy();
-        alpha = rhs.alpha == null ? null : rhs.alpha.makeCopy();
+        alphaMatrix = rhs.alphaMatrix == null ? null : rhs.alphaMatrix.makeCopy();
     }
 
-    public Matrix getQ() {
-        return Q;
-    }
 
     public double getQ(int stateId, int actionId){
         return Q.get(stateId, actionId);
     }
 
-    public void setQ(Matrix q) {
-        Q = q;
-    }
 
     public void setQ(int stateId, int actionId, double Qij){
         Q.set(stateId, actionId, Qij);
     }
 
-    public Matrix getAlpha() {
-        return alpha;
-    }
 
     public double getAlpha(int stateId, int actionId){
-        return alpha.get(stateId, actionId);
+        return alphaMatrix.get(stateId, actionId);
     }
 
-    public void setAlpha(Matrix alpha) {
-        this.alpha = alpha;
-    }
 
     public void setAlpha(double defaultAlpha) {
-        this.alpha.setAll(defaultAlpha);
+        this.alphaMatrix.setAll(defaultAlpha);
     }
 
-    public double getGamma() {
-        return gamma;
-    }
-
-    public void setGamma(double gamma) {
-        this.gamma = gamma;
-    }
-
-    public int getStateCount(){
-        return stateCount;
-    }
-
-    public int getActionCount(){
-        return actionCount;
-    }
 
     public IndexValue actionWithMaxQAtState(int stateId, Set<Integer> actionsAtState){
-        Vec rowVector = Q.getRow(stateId);
+        Vec rowVector = Q.rowAt(stateId);
         return rowVector.indexWithMaxValue(actionsAtState);
     }
 
@@ -143,7 +119,7 @@ public class QModel {
 
 
     public IndexValue actionWithSoftMaxQAtState(int stateId,Set<Integer> actionsAtState, Random random) {
-        Vec rowVector = Q.getRow(stateId);
+        Vec rowVector = Q.rowAt(stateId);
         double sum = 0;
 
         if(actionsAtState==null){
