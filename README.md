@@ -42,7 +42,8 @@ Add the following dependency to your POM file:
 
 The application sample of this library can be found in the following repositories:
 
-* [java-reinforcement-learning-tic-tac-toe](https://github.com/chen0040/java-reinforcement-learning-tic-tac-toe) 
+* [java-reinforcement-learning-tic-tac-toe](https://github.com/chen0040/java-reinforcement-learning-tic-tac-toe)
+* [java-reinforcement-learning-flappy-bird](https://github.com/chen0040/java-reinforcement-learning-flappy-bird) 
 
 # Usage
 
