@@ -11,8 +11,9 @@ import com.github.chen0040.rl.models.QModel;
 import com.github.chen0040.rl.utils.IndexValue;
 
 import java.io.Serializable;
-import java.util.Random;
 import java.util.Set;
+
+import static com.github.chen0040.rl.models.DefaultValues.*;
 
 
 /**
@@ -24,19 +25,23 @@ public class SarsaLearner implements Serializable, Cloneable {
     protected QModel model;
     private ActionSelectionStrategy actionSelectionStrategy;
 
+    @SuppressWarnings("Used-by-user")
     public SarsaLearner() {
 
     }
 
+    @SuppressWarnings("Used-by-user")
     public SarsaLearner(final int stateCount, final int actionCount) {
-        this(stateCount, actionCount, 0.1, 0.7, 0.1);
+        this(stateCount, actionCount, ALPHA, GAMMA, INITIAL_Q);
     }
 
+    @SuppressWarnings("Used-by-user")
     public SarsaLearner(final QModel model, final ActionSelectionStrategy actionSelectionStrategy) {
         this.model = model;
         this.actionSelectionStrategy = actionSelectionStrategy;
     }
 
+    @SuppressWarnings("Used-by-user")
     public SarsaLearner(final int stateCount, final int actionCount, final double alpha, final double gamma, final double initialQ) {
         this.model = new QModel(stateCount, actionCount, initialQ);
         this.model.setAlpha(alpha);
@@ -47,38 +52,6 @@ public class SarsaLearner implements Serializable, Cloneable {
     @SuppressWarnings("Used-by-user")
     public static SarsaLearner fromJson(final String json) {
         return JSON.parseObject(json, SarsaLearner.class);
-    }
-
-    public static void main(final String[] args) {
-        final int stateCount = 100;
-        final int actionCount = 10;
-
-        final SarsaLearner learner = new SarsaLearner(stateCount, actionCount);
-
-        double reward; // reward gained by transiting from prevState to currentState
-        final Random random = new Random();
-        int currentStateId = random.nextInt(stateCount);
-        int currentActionId = learner.selectAction(currentStateId).getIndex();
-
-        for (int time = 0; time < 1000; ++time) {
-
-            System.out.println("Controller does action-" + currentActionId);
-
-            final int newStateId = random.nextInt(actionCount);
-            reward = random.nextDouble();
-
-            System.out.println("Now the new state is " + newStateId);
-            System.out.println("Controller receives Reward = " + reward);
-
-            final int futureActionId = learner.selectAction(newStateId).getIndex();
-
-            System.out.println("Controller is expected to do action-" + futureActionId);
-
-            learner.update(currentStateId, currentActionId, newStateId, futureActionId, reward);
-
-            currentStateId = newStateId;
-            currentActionId = futureActionId;
-        }
     }
 
     @SuppressWarnings("Used-by-user")

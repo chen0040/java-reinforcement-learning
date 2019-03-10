@@ -4,7 +4,6 @@ package com.github.chen0040.rl.models;
 import com.github.chen0040.rl.utils.IndexValue;
 import com.github.chen0040.rl.utils.Matrix;
 import com.github.chen0040.rl.utils.Vec;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -18,12 +17,12 @@ public class QModel {
      * Q value for (state_id, action_id) pair Q is known as the quality of state-action combination, note that it is
      * different from utility of a state
      */
-    @org.jetbrains.annotations.Nullable
+
     private Matrix Q;
     /**
      * $\alpha[s, a]$ value for learning rate: alpha(state_id, action_id)
      */
-    @org.jetbrains.annotations.Nullable
+
     private Matrix alphaMatrix;
 
     /**
@@ -155,12 +154,12 @@ public class QModel {
         return result;
     }
 
-    @Nullable
+
     public Matrix getQ() {
         return this.Q;
     }
 
-    @Nullable
+
     public Matrix getAlphaMatrix() {
         return this.alphaMatrix;
     }

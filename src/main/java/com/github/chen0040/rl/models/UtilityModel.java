@@ -1,7 +1,6 @@
 package com.github.chen0040.rl.models;
 
 import com.github.chen0040.rl.utils.Vec;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
 
@@ -17,7 +16,7 @@ import java.io.Serializable;
  *         is applied at state $s$
  */
 public class UtilityModel implements Serializable {
-    @Nullable
+
     private Vec U;
     private int stateCount;
     private int actionCount;

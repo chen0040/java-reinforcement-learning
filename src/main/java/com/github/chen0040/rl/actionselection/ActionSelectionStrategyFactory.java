@@ -1,5 +1,6 @@
 package com.github.chen0040.rl.actionselection;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,8 +8,7 @@ import java.util.Map;
 /**
  * Created by xschen on 9/27/2015 0027.
  */
-public enum ActionSelectionStrategyFactory {
-    ;
+public class ActionSelectionStrategyFactory implements Serializable {
 
     public static ActionSelectionStrategy deserialize(final String conf) {
         final String[] comps = conf.split(";");
@@ -19,10 +19,8 @@ public enum ActionSelectionStrategyFactory {
             if (field.length < 2) {
                 continue;
             }
-            final String fieldname = field[0].trim();
-            final String fieldvalue = field[1].trim();
 
-            attributes.put(fieldname, fieldvalue);
+            attributes.put(field[0].trim(), field[1].trim());
         }
         if (attributes.isEmpty()) {
             attributes.put("prototype", conf);
@@ -58,4 +56,6 @@ public enum ActionSelectionStrategyFactory {
         }
         return sb.toString();
     }
+
+
 }
