@@ -1,6 +1,7 @@
 package com.github.chen0040.rl.models;
 
 import com.github.chen0040.rl.utils.Vec;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
 
@@ -16,10 +17,12 @@ import java.io.Serializable;
  *         is applied at state $s$
  */
 public class UtilityModel implements Serializable {
+    @Nullable
     private Vec U;
     private int stateCount;
     private int actionCount;
 
+    @SuppressWarnings("Used-by-user")
     public UtilityModel(final int stateCount, final int actionCount, final double initialU) {
         this.stateCount = stateCount;
         this.actionCount = actionCount;
@@ -27,24 +30,7 @@ public class UtilityModel implements Serializable {
         this.U.setAll(initialU);
     }
 
-    public UtilityModel(final int stateCount, final int actionCount) {
-        this(stateCount, actionCount, 0.1);
-    }
-
-    public UtilityModel() {
-
-    }
-
-    public Vec getU() {
-        return this.U;
-    }
-
-    public void setU(final Vec U) {
-        this.U = U;
-    }
-
-    public double getU(final int stateId) {
-        return this.U.get(stateId);
+    private UtilityModel() {
     }
 
     public int getStateCount() {
@@ -77,22 +63,18 @@ public class UtilityModel implements Serializable {
 
     @Override
     public boolean equals(final Object rhs) {
-        if (rhs != null && rhs instanceof UtilityModel) {
+        if (rhs instanceof UtilityModel) {
             final UtilityModel rhs2 = (UtilityModel) rhs;
-            if (this.actionCount != rhs2.actionCount || this.stateCount != rhs2.stateCount) {
-                return false;
-            }
-
-            if ((this.U == null && rhs2.U != null) && (this.U != null && rhs2.U == null)) {
-                return false;
-            }
-            return !(this.U != null && !this.U.equals(rhs2.U));
+            return this.actionCount == rhs2.actionCount &&
+                    this.stateCount == rhs2.stateCount &&
+                    !(this.U != null && !this.U.equals(rhs2.U));
 
         }
         return false;
     }
 
     public void reset(final double initialU) {
+        assert this.U != null;
         this.U.setAll(initialU);
     }
 }
