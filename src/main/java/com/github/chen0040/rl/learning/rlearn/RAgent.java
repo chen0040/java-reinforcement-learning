@@ -27,10 +27,12 @@ public class RAgent implements Serializable {
         this.learner = new RLearner(stateCount, actionCount);
     }
 
+    @SuppressWarnings("Used-by-user")
     public int getCurrentState() {
         return this.currentState;
     }
 
+    @SuppressWarnings("Used-by-user")
     public int getCurrentAction() {
         return this.currentAction;
     }

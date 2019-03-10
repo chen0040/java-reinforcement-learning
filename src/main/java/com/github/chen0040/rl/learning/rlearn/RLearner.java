@@ -7,11 +7,14 @@ import com.github.chen0040.rl.actionselection.AbstractActionSelectionStrategy;
 import com.github.chen0040.rl.actionselection.ActionSelectionStrategy;
 import com.github.chen0040.rl.actionselection.ActionSelectionStrategyFactory;
 import com.github.chen0040.rl.actionselection.EpsilonGreedyActionSelectionStrategy;
+import com.github.chen0040.rl.models.DefaultValues;
 import com.github.chen0040.rl.models.QModel;
 import com.github.chen0040.rl.utils.IndexValue;
 
 import java.io.Serializable;
 import java.util.Set;
+
+import static com.github.chen0040.rl.models.DefaultValues.ALPHA;
 
 
 /**
@@ -29,7 +32,7 @@ public class RLearner implements Serializable, Cloneable {
     }
 
     public RLearner(final int stateCount, final int actionCount) {
-        this(stateCount, actionCount, 0.1, 0.1, 0.7, 0.1);
+        this(stateCount, actionCount, ALPHA, DefaultValues.BETA, DefaultValues.RHO, DefaultValues.INITIAL_Q);
     }
 
     public RLearner(final int state_count, final int action_count, final double alpha, final double beta, final double rho, final double initial_Q) {
@@ -42,10 +45,12 @@ public class RLearner implements Serializable, Cloneable {
         this.actionSelectionStrategy = new EpsilonGreedyActionSelectionStrategy();
     }
 
+    @SuppressWarnings("Used-by-user")
     public static RLearner fromJson(final String json) {
         return JSON.parseObject(json, RLearner.class);
     }
 
+    @SuppressWarnings("Used-by-user")
     public String toJson() {
         return JSON.toJSONString(this, SerializerFeature.BrowserCompatible);
     }
@@ -81,18 +86,22 @@ public class RLearner implements Serializable, Cloneable {
         return false;
     }
 
+    @SuppressWarnings("Used-by-user")
     public double getRho() {
         return this.rho;
     }
 
+    @SuppressWarnings("Used-by-user")
     public void setRho(final double rho) {
         this.rho = rho;
     }
 
+    @SuppressWarnings("Used-by-user")
     public double getBeta() {
         return this.beta;
     }
 
+    @SuppressWarnings("Used-by-user")
     public void setBeta(final double beta) {
         this.beta = beta;
     }
@@ -106,10 +115,12 @@ public class RLearner implements Serializable, Cloneable {
         this.model = model;
     }
 
+    @SuppressWarnings("Used-by-user")
     public String getActionSelection() {
         return ActionSelectionStrategyFactory.serialize(this.actionSelectionStrategy);
     }
 
+    @SuppressWarnings("Used-by-user")
     public void setActionSelection(final String conf) {
         this.actionSelectionStrategy = ActionSelectionStrategyFactory.deserialize(conf);
     }
