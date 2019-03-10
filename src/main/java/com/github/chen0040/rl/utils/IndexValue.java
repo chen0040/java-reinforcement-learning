@@ -1,46 +1,55 @@
 package com.github.chen0040.rl.utils;
 
 
-import lombok.Getter;
-import lombok.Setter;
-
-
 /**
  * Created by xschen on 6/5/2017.
  */
-@Getter
-@Setter
 public class IndexValue {
-   private int index;
-   private double value;
+    private int index;
+    private double value;
 
-   public IndexValue(){
+    public IndexValue() {
 
-   }
+    }
 
-   public IndexValue(int index, double value){
-      this.index = index;
-      this.value = value;
-   }
+    public IndexValue(final int index, final double value) {
+        this.index = index;
+        this.value = value;
+    }
 
-   public IndexValue makeCopy(){
-      IndexValue clone = new IndexValue();
-      clone.setValue(value);
-      clone.setIndex(index);
-      return clone;
-   }
+    public IndexValue makeCopy() {
+        final IndexValue clone = new IndexValue();
+        clone.setValue(this.value);
+        clone.setIndex(this.index);
+        return clone;
+    }
 
-   @Override
-   public boolean equals(Object rhs){
-      if(rhs != null && rhs instanceof IndexValue){
-         IndexValue rhs2 = (IndexValue)rhs;
-         return index == rhs2.index && value == rhs2.value;
-      }
-      return false;
-   }
+    @Override
+    public boolean equals(final Object rhs) {
+        if (rhs != null && rhs instanceof IndexValue) {
+            final IndexValue rhs2 = (IndexValue) rhs;
+            return this.index == rhs2.index && this.value == rhs2.value;
+        }
+        return false;
+    }
 
-   public boolean isValid(){
-      return index != -1;
-   }
+    public boolean isValid() {
+        return this.index != -1;
+    }
 
+    public int getIndex() {
+        return this.index;
+    }
+
+    public void setIndex(final int index) {
+        this.index = index;
+    }
+
+    public double getValue() {
+        return this.value;
+    }
+
+    public void setValue(final double value) {
+        this.value = value;
+    }
 }
