@@ -36,10 +36,6 @@ public class Vec implements Serializable {
         data.forEach(this::set);
     }
 
-    private static boolean isZero(final double a) {
-        return a < DoubleUtils.TOLERANCE;
-    }
-
     public Vec makeCopy() {
         final Vec clone = new Vec(this.dimension);
         clone.copy(this);
@@ -150,41 +146,6 @@ public class Vec implements Serializable {
         return iv;
     }
 
-
-    private double multiply(final Vec rhs) {
-
-        return this.defaultValue == 0 ?
-                this.data.entrySet().stream().mapToDouble(entry -> entry.getValue() * rhs.get(entry.getKey())).sum() :
-                IntStream.range(0, this.dimension).mapToDouble(i -> this.get(i) * rhs.get(i)).sum();
-    }
-
-    private double sum() {
-        return this.data.values().stream().mapToDouble(v -> v).sum() + this.defaultValue * (this.dimension - this.data.size());
-    }
-
-    boolean isZero() {
-        return Vec.isZero(this.sum());
-    }
-
-    double norm() {
-        double sum = this.multiply(this);
-        if (!Vec.isZero(this.defaultValue)) {
-            sum += (this.dimension - this.data.size()) * (this.defaultValue * this.defaultValue);
-        }
-        return Math.sqrt(sum);
-    }
-
-    Vec normalize() {
-        final double norm = this.norm(); // L2 norm is the cartesian distance
-        if (Vec.isZero(norm)) {
-            return new Vec(this.dimension);
-        }
-        final Vec clone = new Vec(this.dimension);
-        clone.setAll(this.defaultValue / norm);
-
-        this.data.keySet().forEach(k -> clone.data.put(k, this.data.get(k) / norm));
-        return clone;
-    }
 
     void setId(final int id) {
         this.id = id;
