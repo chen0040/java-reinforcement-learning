@@ -1,8 +1,8 @@
 package com.github.chen0040.rl.actionselection;
 
-import com.github.chen0040.rl.utils.IndexValue;
 import com.github.chen0040.rl.models.QModel;
 import com.github.chen0040.rl.models.UtilityModel;
+import com.github.chen0040.rl.utils.IndexValue;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,58 +14,50 @@ import java.util.Set;
  */
 public abstract class AbstractActionSelectionStrategy implements ActionSelectionStrategy {
 
+    Map<String, String> attributes = new HashMap<>();
     private String prototype;
-    protected Map<String, String> attributes = new HashMap<String, String>();
 
-    public String getPrototype(){
-        return prototype;
+    @SuppressWarnings("Used-by-user")
+    public AbstractActionSelectionStrategy() {
+        this.prototype = this.getClass().getCanonicalName();
     }
 
-    public IndexValue selectAction(int stateId, QModel model, Set<Integer> actionsAtState) {
-        return new IndexValue();
-    }
-
-    public IndexValue selectAction(int stateId, UtilityModel model, Set<Integer> actionsAtState) {
-        return new IndexValue();
-    }
-
-    public AbstractActionSelectionStrategy(){
-        prototype = this.getClass().getCanonicalName();
-    }
-
-
-    public AbstractActionSelectionStrategy(HashMap<String, String> attributes){
+    @SuppressWarnings("Used-by-user")
+    public AbstractActionSelectionStrategy(final HashMap<String, String> attributes) {
         this.attributes = attributes;
-        if(attributes.containsKey("prototype")){
+        if (attributes.containsKey("prototype")) {
             this.prototype = attributes.get("prototype");
         }
     }
 
-    public Map<String, String> getAttributes(){
-        return attributes;
+    @Override
+    public String getPrototype() {
+        return this.prototype;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        ActionSelectionStrategy rhs = (ActionSelectionStrategy)obj;
-        if(!prototype.equalsIgnoreCase(rhs.getPrototype())) return false;
-        for(Map.Entry<String, String> entry : rhs.getAttributes().entrySet()) {
-            if(!attributes.containsKey(entry.getKey())) {
-                return false;
-            }
-            if(!attributes.get(entry.getKey()).equals(entry.getValue())){
-                return false;
-            }
-        }
-        for(Map.Entry<String, String> entry : attributes.entrySet()) {
-            if(!rhs.getAttributes().containsKey(entry.getKey())) {
-                return false;
-            }
-            if(!rhs.getAttributes().get(entry.getKey()).equals(entry.getValue())){
-                return false;
-            }
-        }
-        return true;
+    public IndexValue selectAction(final int stateId, final QModel model, final Set<Integer> actionsAtState) {
+        return new IndexValue();
+    }
+
+    @Override
+    public IndexValue selectAction(final int stateId, final UtilityModel model, final Set<Integer> actionsAtState) {
+        return new IndexValue();
+    }
+
+    @Override
+    public Map<String, String> getAttributes() {
+        return this.attributes;
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        final ActionSelectionStrategy rhs = (ActionSelectionStrategy) obj;
+        return this.prototype.equalsIgnoreCase(rhs.getPrototype()) &&
+                rhs.getAttributes().entrySet().stream().noneMatch(entry -> !this.attributes.containsKey(entry.getKey()) ||
+                        !this.attributes.get(entry.getKey()).equals(entry.getValue())) &&
+                this.attributes.entrySet().stream().noneMatch(entry -> !rhs.getAttributes().containsKey(entry.getKey()) ||
+                        !rhs.getAttributes().get(entry.getKey()).equals(entry.getValue()));
     }
 
     @Override

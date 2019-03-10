@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -38,7 +38,8 @@
 
 
     <name>Reinforcement Learning Algorithms</name>
-    <description>Classical RL algorithms implemented in Java, including Q-Learn, R-Learn, SARSA, Actor-Critic</description>
+    <description>Classical RL algorithms implemented in Java, including Q-Learn, R-Learn, SARSA, Actor-Critic
+    </description>
     <url>https://github.com/chen0040/java-reinforcement-learning</url>
 
     <distributionManagement>
@@ -235,7 +236,6 @@
                     </plugin>
 
 
-
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>findbugs-maven-plugin</artifactId>
@@ -361,8 +361,6 @@
                 </plugin>
 
 
-
-
             </plugins>
         </pluginManagement>
 
@@ -382,12 +380,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
+                <version>2.3</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
-
-
 
 
         </plugins>
@@ -488,23 +485,12 @@
         </dependency>
 
 
-
         <!-- Utilities -->
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>provided</scope>
-            <version>${lombok.version}</version>
-        </dependency>
-
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>1.2.41</version>
         </dependency>
-
-
     </dependencies>
 
 </project>

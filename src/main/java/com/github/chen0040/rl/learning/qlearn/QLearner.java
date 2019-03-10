@@ -2,7 +2,6 @@ package com.github.chen0040.rl.learning.qlearn;
 
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.github.chen0040.rl.actionselection.AbstractActionSelectionStrategy;
 import com.github.chen0040.rl.actionselection.ActionSelectionStrategy;
@@ -12,131 +11,133 @@ import com.github.chen0040.rl.models.QModel;
 import com.github.chen0040.rl.utils.IndexValue;
 
 import java.io.Serializable;
-import java.util.Random;
 import java.util.Set;
+
+import static com.github.chen0040.rl.models.DefaultValues.*;
 
 
 /**
- * Created by xschen on 9/27/2015 0027.
- * Implement temporal-difference learning Q-Learning, which is an off-policy TD control algorithm
- * Q is known as the quality of state-action combination, note that it is different from utility of a state
+ * Created by xschen on 9/27/2015 0027. Implement temporal-difference learning Q-Learning, which is an off-policy TD
+ * control algorithm Q is known as the quality of state-action combination, note that it is different from utility of a
+ * state
  */
-public class QLearner implements Serializable,Cloneable {
+public class QLearner implements Serializable, Cloneable {
     protected QModel model;
 
     private ActionSelectionStrategy actionSelectionStrategy = new EpsilonGreedyActionSelectionStrategy();
 
-    public QLearner makeCopy(){
-        QLearner clone = new QLearner();
+    public QLearner() {
+
+    }
+
+    public QLearner(final int stateCount, final int actionCount) {
+        this(stateCount, actionCount, ALPHA, GAMMA, INITIAL_Q);
+    }
+
+    public QLearner(final QModel model, final ActionSelectionStrategy actionSelectionStrategy) {
+        this.model = model;
+        this.actionSelectionStrategy = actionSelectionStrategy;
+    }
+
+    public QLearner(final int stateCount, final int actionCount, final double alpha, final double gamma, final double initialQ) {
+        this.model = new QModel(stateCount, actionCount, initialQ);
+        this.model.setAlpha(alpha);
+        this.model.setGamma(gamma);
+        this.actionSelectionStrategy = new EpsilonGreedyActionSelectionStrategy();
+    }
+
+    @SuppressWarnings("Used-by-user")
+    public static QLearner fromJson(final String json) {
+        return JSON.parseObject(json, QLearner.class);
+    }
+
+    public QLearner makeCopy() {
+        final QLearner clone = new QLearner();
         clone.copy(this);
         return clone;
     }
 
+    @SuppressWarnings("Used-by-user")
     public String toJson() {
         return JSON.toJSONString(this, SerializerFeature.BrowserCompatible);
     }
 
-    public static QLearner fromJson(String json){
-        return JSON.parseObject(json, QLearner.class);
-    }
-
-    public void copy(QLearner rhs){
-        model = rhs.model.makeCopy();
-        actionSelectionStrategy = (ActionSelectionStrategy)((AbstractActionSelectionStrategy) rhs.actionSelectionStrategy).clone();
+    public void copy(final QLearner rhs) {
+        this.model = rhs.model.makeCopy();
+        this.actionSelectionStrategy = (ActionSelectionStrategy) ((AbstractActionSelectionStrategy) rhs.actionSelectionStrategy).clone();
     }
 
     @Override
-    public boolean equals(Object obj){
-        if(obj !=null && obj instanceof QLearner){
-            QLearner rhs = (QLearner)obj;
-            if(!model.equals(rhs.model)) return false;
-            return actionSelectionStrategy.equals(rhs.actionSelectionStrategy);
+    public boolean equals(final Object obj) {
+        if (obj instanceof QLearner) {
+            final QLearner rhs = (QLearner) obj;
+            if (!this.model.equals(rhs.model)) {
+                return false;
+            }
+            return this.actionSelectionStrategy.equals(rhs.actionSelectionStrategy);
         }
         return false;
     }
 
     public QModel getModel() {
-        return model;
+        return this.model;
     }
 
-    public void setModel(QModel model) {
+    public void setModel(final QModel model) {
         this.model = model;
     }
 
-
+    @SuppressWarnings("Used-by-user")
     public String getActionSelection() {
-        return ActionSelectionStrategyFactory.serialize(actionSelectionStrategy);
+        return ActionSelectionStrategyFactory.serialize(this.actionSelectionStrategy);
     }
 
-    public void setActionSelection(String conf) {
+    @SuppressWarnings("Used-by-user")
+    public void setActionSelection(final String conf) {
         this.actionSelectionStrategy = ActionSelectionStrategyFactory.deserialize(conf);
     }
 
-    public QLearner(){
-
+    double maxQAtState(final int stateId, final Set<Integer> actionsAtState) {
+        return this.model.actionWithMaxQAtState(stateId, actionsAtState).getValue();
     }
 
-    public QLearner(int stateCount, int actionCount){
-        this(stateCount, actionCount, 0.1, 0.7, 0.1);
+    @SuppressWarnings("Used-by-user")
+    public IndexValue selectAction(final int stateId, final Set<Integer> actionsAtState) {
+        return this.actionSelectionStrategy.selectAction(stateId, this.model, actionsAtState);
     }
 
-    public QLearner(QModel model, ActionSelectionStrategy actionSelectionStrategy){
-        this.model = model;
-        this.actionSelectionStrategy = actionSelectionStrategy;
-    }
-
-    public QLearner(int stateCount, int actionCount, double alpha, double gamma, double initialQ)
-    {
-        model = new QModel(stateCount, actionCount, initialQ);
-        model.setAlpha(alpha);
-        model.setGamma(gamma);
-        actionSelectionStrategy = new EpsilonGreedyActionSelectionStrategy();
+    @SuppressWarnings("Used-by-user")
+    public IndexValue selectAction(final int stateId) {
+        return this.selectAction(stateId, null);
     }
 
 
-    protected double maxQAtState(int stateId, Set<Integer> actionsAtState){
-        IndexValue iv = model.actionWithMaxQAtState(stateId, actionsAtState);
-        double maxQ = iv.getValue();
-        return maxQ;
+    public void update(final int stateId, final int actionId, final int nextStateId, final double immediateReward) {
+        this.update(stateId, actionId, nextStateId, null, immediateReward);
     }
 
-    public IndexValue selectAction(int stateId, Set<Integer> actionsAtState){
-        return actionSelectionStrategy.selectAction(stateId, model, actionsAtState);
-    }
-
-    public IndexValue selectAction(int stateId){
-        return selectAction(stateId, null);
-    }
-
-
-    public void update(int stateId, int actionId, int nextStateId, double immediateReward){
-        update(stateId, actionId, nextStateId, null, immediateReward);
-    }
-
-    public void update(int stateId, int actionId, int nextStateId, Set<Integer> actionsAtNextStateId, double immediateReward)
-    {
+    public void update(final int stateId, final int actionId, final int nextStateId, final Set<Integer> actionsAtNextStateId, final double immediateReward) {
         // old_value is $Q_t(s_t, a_t)$
-        double oldQ = model.getQ(stateId, actionId);
+        final double oldQ = this.model.getQ(stateId, actionId);
 
         // learning_rate;
-        double alpha = model.getAlpha(stateId, actionId);
+        final double alpha = this.model.getAlpha(stateId, actionId);
 
         // discount_rate;
-        double gamma = model.getGamma();
+        final double gamma = this.model.getGamma();
 
         // estimate_of_optimal_future_value is $max_a Q_t(s_{t+1}, a)$
-        double maxQ = maxQAtState(nextStateId, actionsAtNextStateId);
+        final double maxQ = this.maxQAtState(nextStateId, actionsAtNextStateId);
 
         // learned_value = immediate_reward + gamma * estimate_of_optimal_future_value
         // old_value = oldQ
         // temporal_difference = learned_value - old_value
         // new_value = old_value + learning_rate * temporal_difference
-        double newQ = oldQ + alpha * (immediateReward + gamma * maxQ - oldQ);
+        final double newQ = oldQ + alpha * (immediateReward + gamma * maxQ - oldQ);
 
         // new_value is $Q_{t+1}(s_t, a_t)$
-        model.setQ(stateId, actionId, newQ);
+        this.model.setQ(stateId, actionId, newQ);
     }
-
 
 
 }
