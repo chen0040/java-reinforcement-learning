@@ -8,13 +8,10 @@ import java.util.List;
  * Created by xschen on 10/11/2015 0011.
  */
 public class VectorUtils {
-    public static List<Vec> removeZeroVectors(Iterable<Vec> vlist)
-    {
-        List<Vec> vstarlist = new ArrayList<Vec>();
-        for (Vec v : vlist)
-        {
-            if (!v.isZero())
-            {
+    public static List<Vec> removeZeroVectors(final Iterable<Vec> vlist) {
+        final List<Vec> vstarlist = new ArrayList<Vec>();
+        for (final Vec v : vlist) {
+            if (!v.isZero()) {
                 vstarlist.add(v);
             }
         }
@@ -22,13 +19,11 @@ public class VectorUtils {
         return vstarlist;
     }
 
-    public static TupleTwo<List<Vec>, List<Double>> normalize(Iterable<Vec> vlist)
-    {
-        List<Double> norms = new ArrayList<Double>();
-        List<Vec> vstarlist = new ArrayList<Vec>();
-        for (Vec v : vlist)
-        {
-            norms.add(v.norm(2));
+    public static TupleTwo<List<Vec>, List<Double>> normalize(final Iterable<Vec> vlist) {
+        final List<Double> norms = new ArrayList<Double>();
+        final List<Vec> vstarlist = new ArrayList<Vec>();
+        for (final Vec v : vlist) {
+            norms.add(v.norm());
             vstarlist.add(v.normalize());
         }
 

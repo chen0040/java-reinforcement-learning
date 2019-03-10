@@ -11,7 +11,7 @@ import java.util.stream.IntStream;
  * Created by xschen on 9/27/2015 0027.
  */
 public class Vec implements Serializable {
-    private final Map<Integer, Double> data = new HashMap<Integer, Double>();
+    private final Map<Integer, Double> data = new HashMap<>();
     private int dimension;
     private double defaultValue;
     private int id = -1;
@@ -21,9 +21,7 @@ public class Vec implements Serializable {
     }
 
     public Vec(final double[] v) {
-        for (int i = 0; i < v.length; ++i) {
-            this.set(i, v[i]);
-        }
+        IntStream.range(0, v.length).forEach(i -> this.set(i, v[i]));
     }
 
     public Vec(final int dimension) {
@@ -35,13 +33,11 @@ public class Vec implements Serializable {
         this.dimension = dimension;
         this.defaultValue = 0;
 
-        for (final Map.Entry<Integer, Double> entry : data.entrySet()) {
-            this.set(entry.getKey(), entry.getValue());
-        }
+        data.forEach(this::set);
     }
 
-    static boolean isZero(final double a) {
-        return a < 1e-20;
+    private static boolean isZero(final double a) {
+        return a < DoubleUtils.TOLERANCE;
     }
 
     public Vec makeCopy() {
@@ -155,15 +151,7 @@ public class Vec implements Serializable {
     }
 
 
-    private Vec multiply(final double rhs) {
-        final Vec clone = this.makeCopy();
-        for (final Integer i : this.data.keySet()) {
-            clone.data.put(i, rhs * this.data.get(i));
-        }
-        return clone;
-    }
-
-    double multiply(final Vec rhs) {
+    private double multiply(final Vec rhs) {
 
         return this.defaultValue == 0 ?
                 this.data.entrySet().stream().mapToDouble(entry -> entry.getValue() * rhs.get(entry.getKey())).sum() :
@@ -178,30 +166,16 @@ public class Vec implements Serializable {
         return Vec.isZero(this.sum());
     }
 
-    double norm(final int level) {
-        if (level == 1) {
-            double sum = this.data.values().stream().mapToDouble(Math::abs).sum();
-            if (!Vec.isZero(this.defaultValue)) {
-                sum += Math.abs(this.defaultValue) * (this.dimension - this.data.size());
-            }
-            return sum;
-        } else if (level == 2) {
-            double sum = this.multiply(this);
-            if (!Vec.isZero(this.defaultValue)) {
-                sum += (this.dimension - this.data.size()) * (this.defaultValue * this.defaultValue);
-            }
-            return Math.sqrt(sum);
-        } else {
-            double sum = this.data.values().stream().mapToDouble(val -> Math.pow(Math.abs(val), level)).sum();
-            if (!Vec.isZero(this.defaultValue)) {
-                sum += Math.pow(Math.abs(this.defaultValue), level) * (this.dimension - this.data.size());
-            }
-            return Math.pow(sum, 1.0 / level);
+    double norm() {
+        double sum = this.multiply(this);
+        if (!Vec.isZero(this.defaultValue)) {
+            sum += (this.dimension - this.data.size()) * (this.defaultValue * this.defaultValue);
         }
+        return Math.sqrt(sum);
     }
 
     Vec normalize() {
-        final double norm = this.norm(2); // L2 norm is the cartesian distance
+        final double norm = this.norm(); // L2 norm is the cartesian distance
         if (Vec.isZero(norm)) {
             return new Vec(this.dimension);
         }
@@ -210,14 +184,6 @@ public class Vec implements Serializable {
 
         this.data.keySet().forEach(k -> clone.data.put(k, this.data.get(k) / norm));
         return clone;
-    }
-
-    Map<Integer, Double> getData() {
-        return this.data;
-    }
-
-    int getDimension() {
-        return this.dimension;
     }
 
     void setId(final int id) {
