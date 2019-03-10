@@ -3,9 +3,7 @@ package com.github.chen0040.rl.learning.actorcritic;
 import com.github.chen0040.rl.utils.Vec;
 
 import java.io.Serializable;
-import java.util.Random;
 import java.util.Set;
-import java.util.function.Function;
 
 
 /**
@@ -17,85 +15,85 @@ public class ActorCriticAgent implements Serializable {
     private int prevState;
     private int prevAction;
 
-    public void enableEligibilityTrace(double lambda){
-        ActorCriticLambdaLearner acll = new ActorCriticLambdaLearner(learner);
+    @SuppressWarnings("Used-by-user")
+    public ActorCriticAgent(final int stateCount, final int actionCount) {
+        this.learner = new ActorCriticLearner(stateCount, actionCount);
+    }
+
+    public ActorCriticAgent() {
+
+    }
+
+    public ActorCriticAgent(final ActorCriticLearner learner) {
+        this.learner = learner;
+    }
+
+    @SuppressWarnings("Used-by-user")
+    public void enableEligibilityTrace(final double lambda) {
+        final ActorCriticLambdaLearner acll = new ActorCriticLambdaLearner(this.learner);
         acll.setLambda(lambda);
-        learner = acll;
+        this.learner = acll;
     }
 
-    public void start(int stateId){
-        currentState = stateId;
-        prevAction = -1;
-        prevState = -1;
+    @SuppressWarnings("Used-by-user")
+    public void start(final int stateId) {
+        this.currentState = stateId;
+        this.prevAction = -1;
+        this.prevState = -1;
     }
 
-    public ActorCriticLearner getLearner(){
-        return learner;
+    @SuppressWarnings("Used-by-user")
+    public ActorCriticLearner getLearner() {
+        return this.learner;
     }
 
-    public void setLearner(ActorCriticLearner learner){
+    public void setLearner(final ActorCriticLearner learner) {
         this.learner = learner;
     }
 
-    public ActorCriticAgent(int stateCount, int actionCount){
-        learner = new ActorCriticLearner(stateCount, actionCount);
-    }
-
-    public ActorCriticAgent(){
-
-    }
-
-    public ActorCriticAgent(ActorCriticLearner learner){
-        this.learner = learner;
-    }
-
-    public ActorCriticAgent makeCopy(){
-        ActorCriticAgent clone = new ActorCriticAgent();
+    public ActorCriticAgent makeCopy() {
+        final ActorCriticAgent clone = new ActorCriticAgent();
         clone.copy(this);
         return clone;
     }
 
-    public void copy(ActorCriticAgent rhs){
-        learner = (ActorCriticLearner)rhs.learner.makeCopy();
-        prevAction = rhs.prevAction;
-        prevState = rhs.prevState;
-        currentState = rhs.currentState;
+    public void copy(final ActorCriticAgent rhs) {
+        this.learner = (ActorCriticLearner) rhs.learner.makeCopy();
+        this.prevAction = rhs.prevAction;
+        this.prevState = rhs.prevState;
+        this.currentState = rhs.currentState;
     }
 
     @Override
-    public boolean equals(Object obj){
-        if(obj != null && obj instanceof ActorCriticAgent){
-            ActorCriticAgent rhs = (ActorCriticAgent)obj;
-            return learner.equals(rhs.learner) && prevAction == rhs.prevAction && prevState == rhs.prevState && currentState == rhs.currentState;
+    public boolean equals(final Object obj) {
+        if (obj instanceof ActorCriticAgent) {
+            final ActorCriticAgent rhs = (ActorCriticAgent) obj;
+            return this.learner.equals(rhs.learner) && this.prevAction == rhs.prevAction && this.prevState == rhs.prevState && this.currentState == rhs.currentState;
 
         }
         return false;
     }
 
-    public int selectAction(Set<Integer> actionsAtState){
-        return learner.selectAction(currentState, actionsAtState);
+    public int selectAction(final Set<Integer> actionsAtState) {
+        return this.learner.selectAction(this.currentState, actionsAtState);
     }
 
-    public int selectAction(){
-        return learner.selectAction(currentState);
+    public int selectAction() {
+        return this.learner.selectAction(this.currentState);
     }
 
-    public void update(int actionTaken, int newState, double immediateReward, final Vec V){
-        update(actionTaken, newState, null, immediateReward, V);
+    public void update(final int actionTaken, final int newState, final double immediateReward, final Vec V) {
+        this.update(actionTaken, newState, null, immediateReward, V);
     }
 
-    public void update(int actionTaken, int newState, Set<Integer> actionsAtNewState, double immediateReward, final Vec V){
+    public void update(final int actionTaken, final int newState, final Set<Integer> actionsAtNewState, final double immediateReward, final Vec V) {
 
-        learner.update(currentState, actionTaken, newState, actionsAtNewState, immediateReward, new Function<Integer, Double>() {
-            public Double apply(Integer stateId) {
-                return V.get(stateId);
-            }
-        });
+        this.learner.update(this.currentState, actionTaken, newState, actionsAtNewState, immediateReward, V::get);
 
-        prevAction = actionTaken;
-        prevState = currentState;
+        this.prevAction = actionTaken;
+        this.prevState = this.currentState;
 
-        currentState = newState;
+        this.currentState = newState;
     }
 
 }

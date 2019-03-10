@@ -10,7 +10,7 @@ import com.github.chen0040.rl.utils.Matrix;
  * Created by xschen on 9/28/2015 0028.
  */
 public class SarsaLambdaLearner extends SarsaLearner {
-    private double lambda = DefaultValues.LAMDA;
+    private double lambda = DefaultValues.LAMBDA;
     private Matrix e;
     private EligibilityTraceUpdateMode traceUpdateMode = EligibilityTraceUpdateMode.ReplaceTrace;
 
