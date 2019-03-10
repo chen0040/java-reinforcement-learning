@@ -26,14 +26,14 @@ public class IndexValue {
 
     @Override
     public boolean equals(final Object rhs) {
-        if (rhs != null && rhs instanceof IndexValue) {
+        if (rhs instanceof IndexValue) {
             final IndexValue rhs2 = (IndexValue) rhs;
             return this.index == rhs2.index && this.value == rhs2.value;
         }
         return false;
     }
 
-    public boolean isValid() {
+    boolean isValid() {
         return this.index != -1;
     }
 

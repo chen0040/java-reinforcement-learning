@@ -40,6 +40,10 @@ public class Vec implements Serializable {
         }
     }
 
+    static boolean isZero(final double a) {
+        return a < 1e-20;
+    }
+
     public Vec makeCopy() {
         final Vec clone = new Vec(this.dimension);
         clone.copy(this);
@@ -171,25 +175,25 @@ public class Vec implements Serializable {
     }
 
     boolean isZero() {
-        return DoubleUtils.isZero(this.sum());
+        return Vec.isZero(this.sum());
     }
 
     double norm(final int level) {
         if (level == 1) {
             double sum = this.data.values().stream().mapToDouble(Math::abs).sum();
-            if (!DoubleUtils.isZero(this.defaultValue)) {
+            if (!Vec.isZero(this.defaultValue)) {
                 sum += Math.abs(this.defaultValue) * (this.dimension - this.data.size());
             }
             return sum;
         } else if (level == 2) {
             double sum = this.multiply(this);
-            if (!DoubleUtils.isZero(this.defaultValue)) {
+            if (!Vec.isZero(this.defaultValue)) {
                 sum += (this.dimension - this.data.size()) * (this.defaultValue * this.defaultValue);
             }
             return Math.sqrt(sum);
         } else {
             double sum = this.data.values().stream().mapToDouble(val -> Math.pow(Math.abs(val), level)).sum();
-            if (!DoubleUtils.isZero(this.defaultValue)) {
+            if (!Vec.isZero(this.defaultValue)) {
                 sum += Math.pow(Math.abs(this.defaultValue), level) * (this.dimension - this.data.size());
             }
             return Math.pow(sum, 1.0 / level);
@@ -198,7 +202,7 @@ public class Vec implements Serializable {
 
     Vec normalize() {
         final double norm = this.norm(2); // L2 norm is the cartesian distance
-        if (DoubleUtils.isZero(norm)) {
+        if (Vec.isZero(norm)) {
             return new Vec(this.dimension);
         }
         final Vec clone = new Vec(this.dimension);
