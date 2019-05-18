@@ -2,8 +2,8 @@ package com.github.chen0040.rl.utils;
 
 //import com.alibaba.fastjson.annotation.JSONField;
 
-import lombok.Getter;
-import lombok.Setter;
+//import lombok.Getter;
+//import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,8 +14,8 @@ import java.util.Map;
 /**
  * Created by xschen on 9/27/2015 0027.
  */
-@Getter
-@Setter
+//@Getter
+//@Setter
 public class Matrix implements Serializable {
 	private Map<Integer, Vec> rows = new HashMap<>();
 	private int rowCount;

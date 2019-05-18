@@ -1,13 +1,13 @@
 package com.github.chen0040.rl.utils;
 
-import lombok.Getter;
-import lombok.Setter;
+//import lombok.Getter;
+//import lombok.Setter;
 
 /**
  * Created by xschen on 6/5/2017.
  */
-@Getter
-@Setter
+//@Getter
+//@Setter
 public class IndexValue {
 	private int index;
 	private double value;

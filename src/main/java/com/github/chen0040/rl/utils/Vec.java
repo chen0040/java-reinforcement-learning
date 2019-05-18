@@ -1,7 +1,7 @@
 package com.github.chen0040.rl.utils;
 
-import lombok.Getter;
-import lombok.Setter;
+//import lombok.Getter;
+//import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -12,8 +12,8 @@ import java.util.Set;
 /**
  * Created by xschen on 9/27/2015 0027.
  */
-@Getter
-@Setter
+//@Getter
+//@Setter
 public class Vec implements Serializable {
 	private Map<Integer, Double> data = new HashMap<>();
 	private int dimension;

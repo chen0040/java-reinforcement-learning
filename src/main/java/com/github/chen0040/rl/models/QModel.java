@@ -4,8 +4,8 @@ import com.github.chen0040.rl.utils.IndexValue;
 import com.github.chen0040.rl.utils.Matrix;
 import com.github.chen0040.rl.utils.Vec;
 
-import lombok.Getter;
-import lombok.Setter;
+//import lombok.Getter;
+//import lombok.Setter;
 
 import java.util.*;
 
@@ -13,8 +13,8 @@ import java.util.*;
  * @author xschen 9/27/2015 0027. Q is known as the quality of state-action combination, note that
  * it is different from utility of a state
  */
-@Getter
-@Setter
+//@Getter
+//@Setter
 public class QModel {
 	/**
 	 * Q value for (state_id, action_id) pair Q is known as the quality of state-action combination,
