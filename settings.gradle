@@ -1,0 +1,3 @@
+//include ':java-reinforcement-learning'
+include ':demo-tic-tac-toe'
+project(':demo-tic-tac-toe').projectDir = new File('demo-tic-tac-toe')

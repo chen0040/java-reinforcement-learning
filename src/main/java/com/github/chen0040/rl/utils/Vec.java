@@ -1,7 +1,7 @@
 package com.github.chen0040.rl.utils;
 
-import lombok.Getter;
-import lombok.Setter;
+//import lombok.Getter;
+//import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -9,341 +9,329 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-
 /**
  * Created by xschen on 9/27/2015 0027.
  */
-@Getter
-@Setter
+//@Getter
+//@Setter
 public class Vec implements Serializable {
-    private Map<Integer, Double> data = new HashMap<Integer, Double>();
-    private int dimension;
-    private double defaultValue;
-    private int id = -1;
+	private Map<Integer, Double> data = new HashMap<>();
+	private int dimension;
+	private double defaultValue;
+	private int id = -1;
 
-    public Vec(){
+	public Vec() {
 
-    }
+	}
 
-    public Vec(double[] v){
-        for(int i=0; i < v.length; ++i){
-            set(i, v[i]);
-        }
-    }
+	public Vec(double[] v) {
+		for (int i = 0; i < v.length; ++i) {
+			set(i, v[i]);
+		}
+	}
 
-    public Vec(int dimension){
-        this.dimension = dimension;
-        defaultValue = 0;
-    }
+	public Vec(int dimension) {
+		this.dimension = dimension;
+		defaultValue = 0;
+	}
 
-    public Vec(int dimension, Map<Integer, Double> data){
-        this.dimension = dimension;
-        defaultValue = 0;
+	public Vec(int dimension, Map<Integer, Double> data) {
+		this.dimension = dimension;
+		defaultValue = 0;
 
-        for(Map.Entry<Integer, Double> entry : data.entrySet()){
-            set(entry.getKey(), entry.getValue());
-        }
-    }
+		for (Map.Entry<Integer, Double> entry : data.entrySet()) {
+			set(entry.getKey(), entry.getValue());
+		}
+	}
 
-    public Vec makeCopy(){
-        Vec clone = new Vec(dimension);
-        clone.copy(this);
-        return clone;
-    }
+	public Vec makeCopy() {
+		Vec clone = new Vec(dimension);
+		clone.copy(this);
+		return clone;
+	}
 
-    public void copy(Vec rhs){
-        defaultValue = rhs.defaultValue;
-        dimension = rhs.dimension;
-        id = rhs.id;
+	public void copy(Vec rhs) {
+		defaultValue = rhs.defaultValue;
+		dimension = rhs.dimension;
+		id = rhs.id;
 
-        data.clear();
-        for(Map.Entry<Integer, Double> entry : rhs.data.entrySet()){
-            data.put(entry.getKey(), entry.getValue());
-        }
-    }
+		data.clear();
+		for (Map.Entry<Integer, Double> entry : rhs.data.entrySet()) {
+			data.put(entry.getKey(), entry.getValue());
+		}
+	}
 
-    public void set(int i, double value){
-        if(value == defaultValue) return;
+	public void set(int i, double value) {
+		if (value == defaultValue) return;
 
-        data.put(i, value);
-        if(i >= dimension){
-            dimension = i+1;
-        }
-    }
+		data.put(i, value);
+		if (i >= dimension) {
+			dimension = i + 1;
+		}
+	}
 
+	public double get(int i) {
+		return data.getOrDefault(i, defaultValue);
+	}
 
-    public double get(int i){
-        return data.getOrDefault(i, defaultValue);
-    }
+	@Override
+	public boolean equals(Object rhs) {
+		if (rhs != null && rhs instanceof Vec) {
+			Vec rhs2 = (Vec) rhs;
+			if (dimension != rhs2.dimension) {
+				return false;
+			}
 
-    @Override
-    public boolean equals(Object rhs){
-        if(rhs != null && rhs instanceof Vec){
-            Vec rhs2 = (Vec)rhs;
-            if(dimension != rhs2.dimension){
-                return false;
-            }
+			if (data.size() != rhs2.data.size()) {
+				return false;
+			}
 
-            if(data.size() != rhs2.data.size()){
-                return false;
-            }
+			for (Integer index : data.keySet()) {
+				if (!rhs2.data.containsKey(index)) return false;
+				if (!DoubleUtils.equals(data.get(index), rhs2.data.get(index))) {
+					return false;
+				}
+			}
 
-            for(Integer index : data.keySet()){
-                if(!rhs2.data.containsKey(index)) return false;
-                if(!DoubleUtils.equals(data.get(index), rhs2.data.get(index))){
-                    return false;
-                }
-            }
+			if (defaultValue != rhs2.defaultValue) {
+				for (int i = 0; i < dimension; ++i) {
+					if (data.containsKey(i)) {
+						return false;
+					}
+				}
+			}
 
-            if(defaultValue != rhs2.defaultValue){
-                for(int i=0; i < dimension; ++i){
-                    if(data.containsKey(i)){
-                        return false;
-                    }
-                }
-            }
+			return true;
+		}
 
-            return true;
-        }
+		return false;
+	}
 
-        return false;
-    }
+	public void setAll(double value) {
+		defaultValue = value;
+		for (Integer index : data.keySet()) {
+			data.put(index, defaultValue);
+		}
+	}
 
-    public void setAll(double value){
-        defaultValue = value;
-        for(Integer index : data.keySet()){
-            data.put(index, defaultValue);
-        }
-    }
+	public IndexValue indexWithMaxValue(Set<Integer> indices) {
+		if (indices == null) {
+			return indexWithMaxValue();
+		} else {
+			IndexValue iv = new IndexValue();
+			iv.setIndex(-1);
+			iv.setValue(Double.NEGATIVE_INFINITY);
+			for (Integer index : indices) {
+				double value = data.getOrDefault(index, Double.NEGATIVE_INFINITY);
+				if (value > iv.getValue()) {
+					iv.setIndex(index);
+					iv.setValue(value);
+				}
+			}
+			return iv;
+		}
+	}
 
-    public IndexValue indexWithMaxValue(Set<Integer> indices){
-        if(indices == null){
-            return indexWithMaxValue();
-        }else{
-            IndexValue iv = new IndexValue();
-            iv.setIndex(-1);
-            iv.setValue(Double.NEGATIVE_INFINITY);
-            for(Integer index : indices){
-                double value = data.getOrDefault(index, Double.NEGATIVE_INFINITY);
-                if(value > iv.getValue()){
-                    iv.setIndex(index);
-                    iv.setValue(value);
-                }
-            }
-            return iv;
-        }
-    }
+	public IndexValue indexWithMaxValue() {
+		IndexValue iv = new IndexValue();
+		iv.setIndex(-1);
+		iv.setValue(Double.NEGATIVE_INFINITY);
 
-    public IndexValue indexWithMaxValue(){
-        IndexValue iv = new IndexValue();
-        iv.setIndex(-1);
-        iv.setValue(Double.NEGATIVE_INFINITY);
+		for (Map.Entry<Integer, Double> entry : data.entrySet()) {
+			if (entry.getKey() >= dimension) continue;
 
+			double value = entry.getValue();
+			if (value > iv.getValue()) {
+				iv.setValue(value);
+				iv.setIndex(entry.getKey());
+			}
+		}
 
-        for(Map.Entry<Integer, Double> entry : data.entrySet()){
-            if(entry.getKey() >= dimension) continue;
+		if (!iv.isValid()) {
+			iv.setValue(defaultValue);
+		} else {
+			if (iv.getValue() < defaultValue) {
+				for (int i = 0; i < dimension; ++i) {
+					if (!data.containsKey(i)) {
+						iv.setValue(defaultValue);
+						iv.setIndex(i);
+						break;
+					}
+				}
+			}
+		}
 
-            double value = entry.getValue();
-            if(value > iv.getValue()){
-                iv.setValue(value);
-                iv.setIndex(entry.getKey());
-            }
-        }
+		return iv;
+	}
 
-        if(!iv.isValid()){
-            iv.setValue(defaultValue);
-        } else{
-            if(iv.getValue() < defaultValue){
-                for(int i=0; i < dimension; ++i){
-                    if(!data.containsKey(i)){
-                        iv.setValue(defaultValue);
-                        iv.setIndex(i);
-                        break;
-                    }
-                }
-            }
-        }
+	public Vec projectOrthogonal(Iterable<Vec> vlist) {
+		Vec b = this;
+		for (Vec v : vlist) {
+			b = b.minus(b.projectAlong(v));
+		}
 
-        return iv;
-    }
+		return b;
+	}
 
+	public Vec projectOrthogonal(List<Vec> vlist, Map<Integer, Double> alpha) {
+		Vec b = this;
+		for (int i = 0; i < vlist.size(); ++i) {
+			Vec v = vlist.get(i);
+			double norm_a = v.multiply(v);
 
+			if (DoubleUtils.isZero(norm_a)) {
+				return new Vec(dimension);
+			}
+			double sigma = multiply(v) / norm_a;
+			Vec v_parallel = v.multiply(sigma);
 
-    public Vec projectOrthogonal(Iterable<Vec> vlist) {
-        Vec b = this;
-        for(Vec v : vlist)
-        {
-            b = b.minus(b.projectAlong(v));
-        }
+			alpha.put(i, sigma);
 
-        return b;
-    }
+			b = b.minus(v_parallel);
+		}
 
-    public Vec projectOrthogonal(List<Vec> vlist, Map<Integer, Double> alpha) {
-        Vec b = this;
-        for(int i = 0; i < vlist.size(); ++i)
-        {
-            Vec v = vlist.get(i);
-            double norm_a = v.multiply(v);
+		return b;
+	}
 
-            if (DoubleUtils.isZero(norm_a)) {
-                return new Vec(dimension);
-            }
-            double sigma = multiply(v) / norm_a;
-            Vec v_parallel = v.multiply(sigma);
+	public Vec projectAlong(Vec rhs) {
+		double norm_a = rhs.multiply(rhs);
 
-            alpha.put(i, sigma);
+		if (DoubleUtils.isZero(norm_a)) {
+			return new Vec(dimension);
+		}
+		double sigma = multiply(rhs) / norm_a;
+		return rhs.multiply(sigma);
+	}
 
-            b = b.minus(v_parallel);
-        }
+	public Vec multiply(double rhs) {
+		Vec clone = (Vec) this.makeCopy();
+		for (Integer i : data.keySet()) {
+			clone.data.put(i, rhs * data.get(i));
+		}
+		return clone;
+	}
 
-        return b;
-    }
+	public double multiply(Vec rhs) {
+		double productSum = 0;
+		if (defaultValue == 0) {
+			for (Map.Entry<Integer, Double> entry : data.entrySet()) {
+				productSum += entry.getValue() * rhs.get(entry.getKey());
+			}
+		} else {
+			for (int i = 0; i < dimension; ++i) {
+				productSum += get(i) * rhs.get(i);
+			}
+		}
 
-    public Vec projectAlong(Vec rhs)
-    {
-        double norm_a = rhs.multiply(rhs);
+		return productSum;
+	}
 
-        if (DoubleUtils.isZero(norm_a)) {
-            return new Vec(dimension);
-        }
-        double sigma = multiply(rhs) / norm_a;
-        return rhs.multiply(sigma);
-    }
+	public Vec pow(double scalar) {
+		Vec result = new Vec(dimension);
+		for (Map.Entry<Integer, Double> entry : data.entrySet()) {
+			result.data.put(entry.getKey(), Math.pow(entry.getValue(), scalar));
+		}
+		return result;
+	}
 
-    public Vec multiply(double rhs){
-        Vec clone = (Vec)this.makeCopy();
-        for(Integer i : data.keySet()){
-            clone.data.put(i, rhs * data.get(i));
-        }
-        return clone;
-    }
+	public Vec add(Vec rhs) {
+		Vec result = new Vec(dimension);
+		int index;
+		for (Map.Entry<Integer, Double> entry : data.entrySet()) {
+			index = entry.getKey();
+			result.data.put(index, entry.getValue() + rhs.data.get(index));
+		}
+		for (Map.Entry<Integer, Double> entry : rhs.data.entrySet()) {
+			index = entry.getKey();
+			if (result.data.containsKey(index)) continue;
+			result.data.put(index, entry.getValue() + data.get(index));
+		}
 
-    public double multiply(Vec rhs)
-    {
-        double productSum = 0;
-        if(defaultValue == 0) {
-            for (Map.Entry<Integer, Double> entry : data.entrySet()) {
-                productSum += entry.getValue() * rhs.get(entry.getKey());
-            }
-        } else {
-            for(int i=0; i < dimension; ++i){
-                productSum += get(i) * rhs.get(i);
-            }
-        }
+		return result;
+	}
 
-        return productSum;
-    }
+	public Vec minus(Vec rhs) {
+		Vec result = new Vec(dimension);
+		int index;
+		for (Map.Entry<Integer, Double> entry : data.entrySet()) {
+			index = entry.getKey();
+			result.data.put(index, entry.getValue() - rhs.data.get(index));
+		}
+		for (Map.Entry<Integer, Double> entry : rhs.data.entrySet()) {
+			index = entry.getKey();
+			if (result.data.containsKey(index)) continue;
+			result.data.put(index, data.get(index) - entry.getValue());
+		}
 
-    public Vec pow(double scalar)
-    {
-        Vec result = new Vec(dimension);
-        for (Map.Entry<Integer, Double> entry : data.entrySet())
-        {
-            result.data.put(entry.getKey(), Math.pow(entry.getValue(), scalar));
-        }
-        return result;
-    }
+		return result;
+	}
 
-    public Vec add(Vec rhs)
-    {
-        Vec result = new Vec(dimension);
-        int index;
-        for (Map.Entry<Integer, Double> entry : data.entrySet()) {
-            index = entry.getKey();
-            result.data.put(index, entry.getValue() + rhs.data.get(index));
-        }
-        for(Map.Entry<Integer, Double> entry : rhs.data.entrySet()){
-            index = entry.getKey();
-            if(result.data.containsKey(index)) continue;
-            result.data.put(index, entry.getValue() + data.get(index));
-        }
+	public double sum() {
+		double sum = 0;
 
-        return result;
-    }
+		for (Map.Entry<Integer, Double> entry : data.entrySet()) {
+			sum += entry.getValue();
+		}
+		sum += defaultValue * (dimension - data.size());
 
-    public Vec minus(Vec rhs)
-    {
-        Vec result = new Vec(dimension);
-        int index;
-        for (Map.Entry<Integer, Double> entry : data.entrySet()) {
-            index = entry.getKey();
-            result.data.put(index, entry.getValue() - rhs.data.get(index));
-        }
-        for(Map.Entry<Integer, Double> entry : rhs.data.entrySet()){
-            index = entry.getKey();
-            if(result.data.containsKey(index)) continue;
-            result.data.put(index, data.get(index) - entry.getValue());
-        }
+		return sum;
+	}
 
-        return result;
-    }
+	public boolean isZero() {
+		return DoubleUtils.isZero(sum());
+	}
 
-    public double sum(){
-        double sum = 0;
+	public double norm(int level) {
+		if (level == 1) {
+			double sum = 0;
+			for (Double val : data.values()) {
+				sum += Math.abs(val);
+			}
+			if (!DoubleUtils.isZero(defaultValue)) {
+				sum += Math.abs(defaultValue) * (dimension - data.size());
+			}
+			return sum;
+		} else if (level == 2) {
+			double sum = multiply(this);
+			if (!DoubleUtils.isZero(defaultValue)) {
+				sum += (dimension - data.size()) * (defaultValue * defaultValue);
+			}
+			return Math.sqrt(sum);
+		} else {
+			double sum = 0;
+			for (Double val : this.data.values()) {
+				sum += Math.pow(Math.abs(val), level);
+			}
+			if (!DoubleUtils.isZero(defaultValue)) {
+				sum += Math.pow(Math.abs(defaultValue), level) * (dimension - data.size());
+			}
+			return Math.pow(sum, 1.0 / level);
+		}
+	}
 
-        for(Map.Entry<Integer, Double> entry : data.entrySet()){
-            sum += entry.getValue();
-        }
-        sum += defaultValue * (dimension - data.size());
+	public Vec normalize() {
+		double norm = norm(2); // L2 norm is the cartesian distance
+		if (DoubleUtils.isZero(norm)) {
+			return new Vec(dimension);
+		}
+		Vec clone = new Vec(dimension);
+		clone.setAll(defaultValue / norm);
 
-        return sum;
-    }
+		for (Integer k : data.keySet()) {
+			clone.data.put(k, data.get(k) / norm);
+		}
+		return clone;
+	}
 
-    public boolean isZero(){
-        return DoubleUtils.isZero(sum());
-    }
+	public void setId(int rowIndex) {
+		this.id = rowIndex;
+	}
 
-    public double norm(int level)
-    {
-        if (level == 1)
-        {
-            double sum = 0;
-            for (Double val : data.values())
-            {
-                sum += Math.abs(val);
-            }
-            if(!DoubleUtils.isZero(defaultValue)) {
-                sum += Math.abs(defaultValue) * (dimension - data.size());
-            }
-            return sum;
-        }
-        else if (level == 2)
-        {
-            double sum = multiply(this);
-            if(!DoubleUtils.isZero(defaultValue)){
-                sum += (dimension - data.size()) * (defaultValue * defaultValue);
-            }
-            return Math.sqrt(sum);
-        }
-        else
-        {
-            double sum = 0;
-            for (Double val : this.data.values())
-            {
-                sum += Math.pow(Math.abs(val), level);
-            }
-            if(!DoubleUtils.isZero(defaultValue)) {
-                sum += Math.pow(Math.abs(defaultValue), level) * (dimension - data.size());
-            }
-            return Math.pow(sum, 1.0 / level);
-        }
-    }
+	public Map<Integer, Double> getData() {
+		return this.data;
+	}
 
-    public Vec normalize()
-    {
-        double norm = norm(2); // L2 norm is the cartesian distance
-        if (DoubleUtils.isZero(norm))
-        {
-            return new Vec(dimension);
-        }
-        Vec clone = new Vec(dimension);
-        clone.setAll(defaultValue / norm);
-
-        for (Integer k : data.keySet())
-        {
-            clone.data.put(k, data.get(k) / norm);
-        }
-        return clone;
-    }
+	public int getDimension() {
+		return this.dimension;
+	}
 }
