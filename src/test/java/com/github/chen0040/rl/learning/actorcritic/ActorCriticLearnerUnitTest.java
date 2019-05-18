@@ -1,6 +1,7 @@
 package com.github.chen0040.rl.learning.actorcritic;
 
 import com.github.chen0040.rl.utils.Vec;
+
 import org.testng.annotations.Test;
 
 import java.util.Random;
@@ -12,39 +13,39 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
  */
 public class ActorCriticLearnerUnitTest {
 
-   @Test
-   public void test_learn(){
-      int stateCount = 100;
-      int actionCount = 10;
+	@Test
+	public void test_learn() {
+		int stateCount = 100;
+		int actionCount = 10;
 
-      ActorCriticLearner learner = new ActorCriticLearner(stateCount, actionCount);
-      final Vec stateValues = new Vec(stateCount);
+		ActorCriticLearner learner = new ActorCriticLearner(stateCount, actionCount);
+		final Vec stateValues = new Vec(stateCount);
 
-      Random random = new Random();
-      int currentStateId = random.nextInt(stateCount);
-      for(int time=0; time < 1000; ++time){
+		Random random = new Random();
+		int currentStateId = random.nextInt(stateCount);
+		for (int time = 0; time < 1000; ++time) {
 
-         int actionId = learner.selectAction(currentStateId);
-         System.out.println("Agent does action-"+actionId);
+			int actionId = learner.selectAction(currentStateId);
+			System.out.println("Agent does action-" + actionId);
 
-         int newStateId = random.nextInt(actionCount);
-         double reward = random.nextDouble();
+			int newStateId = random.nextInt(actionCount);
+			double reward = random.nextDouble();
 
-         System.out.println("Now the new state is "+newStateId);
-         System.out.println("Agent receives Reward = "+reward);
+			System.out.println("Now the new state is " + newStateId);
+			System.out.println("Agent receives Reward = " + reward);
 
-         System.out.println("World state values changed ...");
-         for(int stateId = 0; stateId < stateCount; ++stateId){
-            stateValues.set(stateId, random.nextDouble());
-         }
+			System.out.println("World state values changed ...");
+			for (int stateId = 0; stateId < stateCount; ++stateId) {
+				stateValues.set(stateId, random.nextDouble());
+			}
 
-         learner.update(currentStateId, actionId, newStateId, reward, stateValues::get);
-      }
+			learner.update(currentStateId, actionId, newStateId, reward, stateValues::get);
+		}
 
-      ActorCriticLearner learner2 = ActorCriticLearner.fromJson(learner.toJson());
+		ActorCriticLearner learner2 = ActorCriticLearner.fromJson(learner.toJson());
 
-      assertThat(learner2.getP()).isEqualTo(learner.getP());
-      assertThat(learner2.getActionSelection()).isEqualTo(learner.getActionSelection());
-      assertThat(learner2).isEqualTo(learner);
-   }
+		assertThat(learner2.getP()).isEqualTo(learner.getP());
+		assertThat(learner2.getActionSelection()).isEqualTo(learner.getActionSelection());
+		assertThat(learner2).isEqualTo(learner);
+	}
 }
